@@ -70,7 +70,6 @@
             <li>Konsultasi Peralatan Outdoor</li>
             <li>Paket Grup & Corporate</li>
             <li>Pengiriman Peralatan (Area Semarang)</li>
-            <li>Workshop & Training Outdoor</li>
         </ul>
     </section>
 

@@ -25,6 +25,15 @@
             padding: 14px 24px;
         }
 
+      
+    .navbar-brand {
+        color: white !important;
+    }
+    
+    .navbar-brand:hover {
+        color: #f0f0f0 !important;
+    }
+
         .navbar-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -292,7 +301,7 @@
 <header class="navbar">
     <div class="navbar-container">
         <div class="navbar-logo">
-            <span>EXplorent</span>
+        <a class="navbar-brand font-weight-bold" href="/">EXplorent</a>
         </div>
 
         <nav class="navbar-menu">

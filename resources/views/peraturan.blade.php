@@ -7,7 +7,7 @@
     <div style="background-color: #f9fafb; padding: 24px; border-radius: 8px; border-left: 4px solid #e30613;">
         <ol style="list-style-type: decimal; padding-left: 24px; line-height: 2;">
             <li style="margin-bottom: 16px;">
-                <strong>Identitas</strong> - Penyewa wajib meninggalkan identitas asli (KTP/KTM) saat pengambilan alat.
+                <strong>Identitas</strong> - Penyewa wajib meninggalkan identitas asli (KTP) saat pengambilan alat.
             </li>
             <li style="margin-bottom: 16px;">
                 <strong>Tanggung Jawab</strong> - Kerusakan atau kehilangan alat menjadi tanggung jawab penyewa sepenuhnya.
