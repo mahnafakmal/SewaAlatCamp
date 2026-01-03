@@ -15,11 +15,13 @@
     <section>
         <h2>Produk Populer</h2>
         <div class="produk-grid">
-            @foreach($produk as $item)
+            @foreach($produk as $index => $item)
             <div class="produk-card">
                 <h3>{{ $item['nama'] }}</h3>
                 <p>Mulai {{ $item['harga'] }} {{ $item['periode'] }}</p>
-                <a href="{{ route('cara-sewa') }}" class="btn-sewa">Sewa Sekarang</a>
+                <button class="btn-sewa" onclick="addToCart('prod_{{ $index }}', '{{ $item['nama'] }}', '{{ $item['harga'] }}')">
+                    Tambah ke Keranjang
+                </button>
             </div>
             @endforeach
         </div>
@@ -36,6 +38,7 @@
                     <th>Harga / Hari</th>
                     <th>Stok</th>
                     <th>Kondisi</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +49,11 @@
                     <td class="harga">{{ $item['harga'] }}</td>
                     <td><span class="badge badge-green">{{ $item['stok'] }} unit</span></td>
                     <td><span class="badge badge-blue">{{ $item['kondisi'] }}</span></td>
+                    <td>
+                        <button class="btn-sewa" onclick="addToCart('item_{{ $item['no'] }}', '{{ $item['nama'] }}', '{{ $item['harga'] }}')">
+                            + Keranjang
+                        </button>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

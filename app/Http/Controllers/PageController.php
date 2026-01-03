@@ -3,52 +3,52 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
     public function beranda()
     {
-        $produk = [
-            [
-                'nama' => 'Tenda Dome',
-                'harga' => 'Rp35.000',
-                'periode' => '/ hari'
-            ],
-            [
-                'nama' => 'Carrier 60L',
-                'harga' => 'Rp25.000',
-                'periode' => '/ hari'
-            ],
-            [
-                'nama' => 'Sleeping Bag',
-                'harga' => 'Rp10.000',
-                'periode' => '/ hari'
-            ],
-            [
-                'nama' => 'Matras Camping',
-                'harga' => 'Rp8.000',
-                'periode' => '/ hari'
-            ],
-            [
-                'nama' => 'Headlamp',
-                'harga' => 'Rp5.000',
-                'periode' => '/ hari'
-            ],
-            [
-                'nama' => 'Cooking Set',
-                'harga' => 'Rp15.000',
-                'periode' => '/ hari'
-            ]
-        ];
+        // Ambil produk populer dari database
+        $produk = DB::table('barang')
+            ->join('kategori', 'barang.kategori_id', '=', 'kategori.id')
+            ->select(
+                'barang.nama_barang as nama',
+                'barang.harga_per_hari',
+                'kategori.nama_kategori'
+            )
+            ->where('barang.is_populer', true)
+            ->where('barang.stok', '>', 0)
+            ->get()
+            ->map(function($item) {
+                return [
+                    'nama' => $item->nama,
+                    'harga' => 'Rp' . number_format($item->harga_per_hari, 0, ',', '.'),
+                    'periode' => '/ hari'
+                ];
+            });
 
-        $peralatan = [
-            ['no' => 1, 'nama' => 'Tenda Dome', 'harga' => 'Rp35.000', 'stok' => 5, 'kondisi' => 'Baik'],
-            ['no' => 2, 'nama' => 'Carrier 60L', 'harga' => 'Rp25.000', 'stok' => 8, 'kondisi' => 'Baik'],
-            ['no' => 3, 'nama' => 'Sleeping Bag', 'harga' => 'Rp10.000', 'stok' => 12, 'kondisi' => 'Baik'],
-            ['no' => 4, 'nama' => 'Matras Camping', 'harga' => 'Rp8.000', 'stok' => 15, 'kondisi' => 'Baik'],
-            ['no' => 5, 'nama' => 'Headlamp', 'harga' => 'Rp5.000', 'stok' => 20, 'kondisi' => 'Baik'],
-            ['no' => 6, 'nama' => 'Cooking Set', 'harga' => 'Rp15.000', 'stok' => 6, 'kondisi' => 'Baik'],
-        ];
+        // Ambil semua peralatan dari database
+        $peralatan = DB::table('barang')
+            ->select(
+                'barang.id',
+                'barang.nama_barang as nama',
+                'barang.harga_per_hari',
+                'barang.stok',
+                'barang.kondisi'
+            )
+            ->where('barang.stok', '>', 0)
+            ->orderBy('barang.id')
+            ->get()
+            ->map(function($item, $index) {
+                return [
+                    'no' => $index + 1,
+                    'nama' => $item->nama,
+                    'harga' => 'Rp' . number_format($item->harga_per_hari, 0, ',', '.'),
+                    'stok' => $item->stok,
+                    'kondisi' => $item->kondisi
+                ];
+            });
 
         return view('beranda', [
             'title' => 'Beranda',
