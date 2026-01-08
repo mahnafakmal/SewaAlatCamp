@@ -24,7 +24,7 @@
             <p style="color: #4b5563; margin: 0; font-size: 1.05rem;">
                 {{ $nohp }}
             </p>
-            <a href="https://wa.me/62{{ substr($nohp, 1) }}" style="display: inline-block; margin-top: 12px; background-color: #25d366; color: white; padding: 8px 16px; text-decoration: none; border-radius: 6px; font-weight: 500;">
+            <a href="https://wa.me/6285147111724" style="display: inline-block; margin-top: 12px; background-color: #25d366; color: white; padding: 8px 16px; text-decoration: none; border-radius: 6px; font-weight: 500;">
                 Chat via WhatsApp
             </a>
         </div>

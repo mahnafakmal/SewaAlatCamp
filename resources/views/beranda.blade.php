@@ -19,7 +19,8 @@
             <div class="produk-card">
                 <h3>{{ $item['nama'] }}</h3>
                 <p>Mulai {{ $item['harga'] }} {{ $item['periode'] }}</p>
-                <button class="btn-sewa" onclick="addToCart('prod_{{ $index }}', '{{ $item['nama'] }}', '{{ $item['harga'] }}')">
+                <button class="btn-sewa" onclick="addToCart('produk_{{ $index + 1 }}', '{{ $item['nama'] }}', '{{ $item['harga'] }}')">
+
                     Tambah ke Keranjang
                 </button>
             </div>

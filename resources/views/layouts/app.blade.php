@@ -508,6 +508,7 @@
             <a href="{{ route('cara-sewa') }}">Cara Sewa</a>
             <a href="{{ route('peraturan') }}">Peraturan Sewa</a>
             <a href="{{ route('info') }}">Info</a>
+            
         </nav>
 
         <div class="navbar-right">
@@ -774,3 +775,4 @@
 
 </body>
 </html>
+
