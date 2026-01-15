@@ -200,10 +200,11 @@
         .cart-item {
             display: flex;
             gap: 12px;
-            padding: 12px;
+            padding: 16px;
             border: 1px solid #e5e7eb;
             border-radius: 8px;
             margin-bottom: 12px;
+            background: white;
         }
 
         .cart-item-info {
@@ -212,48 +213,84 @@
 
         .cart-item-name {
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #1f2937;
         }
 
         .cart-item-price {
             color: #dc2626;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.875rem;
+            margin-bottom: 12px;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
         }
 
         .cart-item-qty {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 12px;
+            background: #f9fafb;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
         }
 
         .qty-btn {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border: 1px solid #d1d5db;
             background: white;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
         }
 
         .qty-btn:hover {
-            background: #f3f4f6;
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.95);
+        }
+
+        .qty-number {
+            min-width: 30px;
+            text-align: center;
+            font-weight: 600;
+            color: #1f2937;
         }
 
         .cart-item-remove {
             background: #fee2e2;
             color: #dc2626;
             border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
         }
 
         .cart-item-remove:hover {
             background: #fecaca;
+        }
+
+        .cart-item-remove:active {
+            transform: scale(0.95);
         }
 
         .cart-empty {
@@ -491,6 +528,210 @@
                 width: 100%;
                 right: -100%;
             }
+
+            .modal-content {
+                width: 95%;
+                padding: 24px;
+            }
+        }
+
+        /* CUSTOM MODAL */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .custom-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .modal-body {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .modal-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-info-row:last-child {
+            border-bottom: none;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #dc2626;
+            padding-top: 16px;
+        }
+
+        .modal-info-label {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .modal-info-value {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+        }
+
+        .modal-btn-secondary {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        /* NOTIFICATION TOAST */
+        .notification-toast {
+            position: fixed;
+            top: 80px;
+            right: 24px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 3000;
+            animation: slideInRight 0.3s ease-out;
+            max-width: 400px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification-toast.success {
+            border-left: 4px solid #10b981;
+        }
+
+        .notification-toast.error {
+            border-left: 4px solid #ef4444;
+        }
+
+        .notification-toast.info {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .notification-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .notification-message {
+            flex: 1;
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-close:hover {
+            color: #4b5563;
         }
     </style>
 </head>
@@ -557,6 +798,33 @@
 
 @yield('content')
 
+<!-- CHECKOUT MODAL -->
+<div class="custom-modal" id="checkoutModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-icon">🎉</div>
+            <h2 class="modal-title">Konfirmasi Checkout</h2>
+            <p class="modal-subtitle">Fitur checkout akan segera hadir!</p>
+        </div>
+        
+        <div class="modal-body">
+            <div class="modal-info-row">
+                <span class="modal-info-label">Total Item</span>
+                <span class="modal-info-value" id="modalTotalItems">0</span>
+            </div>
+            <div class="modal-info-row">
+                <span class="modal-info-label">Total Harga</span>
+                <span class="modal-info-value" id="modalTotalPrice">Rp0</span>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" onclick="closeCheckoutModal()">Batal</button>
+            <button class="modal-btn modal-btn-primary" onclick="confirmCheckout()">OK</button>
+        </div>
+    </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
     © {{ date('Y') }} EXplorent | Designed by kelompok 6
@@ -566,17 +834,10 @@
     // CART FUNCTIONALITY
     let cart = [];
 
-    // Load cart from localStorage on page load
+    // Load cart from memory (not localStorage)
     function loadCart() {
-        try {
-            const savedCart = localStorage.getItem('explorent_cart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-            }
-        } catch (e) {
-            console.error('Error loading cart:', e);
-            cart = [];
-        }
+        // Cart is already initialized as empty array
+        console.log('Cart initialized');
     }
 
     function toggleCart() {
@@ -587,13 +848,13 @@
     }
 
     function addToCart(id, nama, harga) {
-        console.log('Adding to cart:', id, nama, harga); // Debug
+        console.log('Adding to cart:', id, nama, harga);
         
         const existingItem = cart.find(item => item.id === id);
         
         if (existingItem) {
             existingItem.qty += 1;
-            console.log('Item exists, quantity increased:', existingItem); // Debug
+            console.log('Item exists, quantity increased:', existingItem);
         } else {
             cart.push({
                 id: id,
@@ -601,55 +862,56 @@
                 harga: harga,
                 qty: 1
             });
-            console.log('New item added'); // Debug
+            console.log('New item added');
         }
         
-        saveCart();
         updateCartUI();
-        
-        console.log('Current cart:', cart); // Debug
+        console.log('Current cart:', cart);
         
         // Show notification
-        alert('✅ ' + nama + ' berhasil ditambahkan ke keranjang!');
+        showNotification(nama + ' berhasil ditambahkan ke keranjang!', 'success');
     }
 
     function removeFromCart(id) {
-        if (confirm('Hapus item ini dari keranjang?')) {
+        const item = cart.find(item => item.id === id);
+        if (item) {
             cart = cart.filter(item => item.id !== id);
-            saveCart();
             updateCartUI();
-            console.log('Item removed, current cart:', cart); // Debug
+            showNotification('Item berhasil dihapus dari keranjang', 'info');
+            console.log('Item removed, current cart:', cart);
         }
     }
 
     function clearCart() {
-        if (confirm('Hapus semua item dari keranjang?')) {
-            cart = [];
-            saveCart();
-            updateCartUI();
-            alert('Keranjang telah dikosongkan!');
+        if (cart.length === 0) {
+            showNotification('Keranjang sudah kosong!', 'info');
+            return;
         }
+        
+        cart = [];
+        updateCartUI();
+        showNotification('Keranjang telah dikosongkan!', 'success');
     }
 
     function updateQty(id, change) {
         const item = cart.find(item => item.id === id);
         if (item) {
-            item.qty += change;
-            if (item.qty <= 0) {
+            const newQty = item.qty + change;
+            
+            // Jika quantity menjadi 0 atau kurang, hapus item
+            if (newQty <= 0) {
                 removeFromCart(id);
             } else {
-                saveCart();
+                item.qty = newQty;
                 updateCartUI();
+                
+                // Notifikasi jika menambah
+                if (change > 0) {
+                    showNotification('Jumlah item bertambah', 'success');
+                } else {
+                    showNotification('Jumlah item berkurang', 'info');
+                }
             }
-        }
-    }
-
-    function saveCart() {
-        try {
-            localStorage.setItem('explorent_cart', JSON.stringify(cart));
-            console.log('Cart saved:', cart); // Debug
-        } catch (e) {
-            console.error('Error saving cart:', e);
         }
     }
 
@@ -676,13 +938,15 @@
                     <div class="cart-item-info">
                         <div class="cart-item-name">${item.nama}</div>
                         <div class="cart-item-price">${item.harga} / hari</div>
-                        <div class="cart-item-qty">
-                            <button class="qty-btn" onclick="updateQty(${item.id}, -1)">−</button>
-                            <span>${item.qty}</span>
-                            <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                        <div class="cart-item-controls">
+                            <div class="cart-item-qty">
+                                <button class="qty-btn" onclick="updateQty(${item.id}, -1)" title="Kurangi">−</button>
+                                <span class="qty-number">${item.qty}</span>
+                                <button class="qty-btn" onclick="updateQty(${item.id}, 1)" title="Tambah">+</button>
+                            </div>
+                            <button class="cart-item-remove" onclick="removeFromCart(${item.id})">Hapus</button>
                         </div>
                     </div>
-                    <button class="cart-item-remove" onclick="removeFromCart(${item.id})">Hapus</button>
                 </div>
             `).join('');
         }
@@ -698,7 +962,7 @@
 
     function checkout() {
         if (cart.length === 0) {
-            alert('Keranjang masih kosong!');
+            showNotification('Keranjang masih kosong!', 'error');
             return;
         }
         
@@ -708,12 +972,11 @@
             return sum + (price * item.qty);
         }, 0);
         
-        alert('Fitur checkout akan segera hadir!\n\nTotal item: ' + totalItems + '\nTotal harga: Rp' + total.toLocaleString('id-ID'));
+        showCheckoutModal(totalItems, total);
     }
 
     // SEARCH FUNCTIONALITY
     function searchBarang(event) {
-        // Jika tekan Enter
         if (event && event.key !== 'Enter') {
             return;
         }
@@ -722,7 +985,6 @@
         const searchTerm = searchInput.value.toLowerCase().trim();
         
         if (searchTerm === '') {
-            // Reset semua card dan row jika search kosong
             document.querySelectorAll('.produk-card').forEach(card => {
                 card.style.display = 'block';
             });
@@ -732,7 +994,6 @@
             return;
         }
 
-        // Search di produk cards
         let foundInCards = 0;
         document.querySelectorAll('.produk-card').forEach(card => {
             const cardText = card.textContent.toLowerCase();
@@ -744,7 +1005,6 @@
             }
         });
 
-        // Search di table
         let foundInTable = 0;
         document.querySelectorAll('table tbody tr').forEach(row => {
             const rowText = row.textContent.toLowerCase();
@@ -756,12 +1016,11 @@
             }
         });
 
-        // Show notification
         const totalFound = foundInCards + foundInTable;
         if (totalFound === 0) {
-            alert('Tidak ada barang yang ditemukan dengan kata kunci: "' + searchTerm + '"');
+            showNotification('Tidak ada barang yang ditemukan dengan kata kunci: "' + searchTerm + '"', 'error');
         } else {
-            console.log('Ditemukan ' + totalFound + ' barang');
+            showNotification('Ditemukan ' + totalFound + ' barang', 'success');
         }
     }
 
@@ -769,10 +1028,53 @@
     document.addEventListener('DOMContentLoaded', function() {
         loadCart();
         updateCartUI();
-        console.log('Cart initialized:', cart); // Debug
+        console.log('Cart initialized:', cart);
     });
+
+    // CUSTOM NOTIFICATION FUNCTION
+    function showNotification(message, type = 'info') {
+        const icons = {
+            success: '✅',
+            error: '❌',
+            info: 'ℹ️'
+        };
+
+        const notification = document.createElement('div');
+        notification.className = `notification-toast ${type}`;
+        notification.innerHTML = `
+            <div class="notification-icon">${icons[type]}</div>
+            <div class="notification-message">${message}</div>
+            <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
+    // CHECKOUT MODAL FUNCTIONS
+    function showCheckoutModal(totalItems, totalPrice) {
+        const modal = document.getElementById('checkoutModal');
+        document.getElementById('modalTotalItems').textContent = totalItems;
+        document.getElementById('modalTotalPrice').textContent = 'Rp' + totalPrice.toLocaleString('id-ID');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCheckoutModal() {
+        const modal = document.getElementById('checkoutModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    function confirmCheckout() {
+        closeCheckoutModal();
+        showNotification('Terima kasih! Fitur checkout akan segera tersedia.', 'success');
+    }
 </script>
 
 </body>
 </html>
-

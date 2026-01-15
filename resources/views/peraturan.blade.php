@@ -44,9 +44,7 @@
         <p style="margin: 10px 0;">
             Dengan melakukan penyewaan alat di EXplorent, Anda dianggap telah membaca, memahami, dan setuju dengan semua peraturan sewa di atas.
         </p>
-        <p style="margin: 10px 0;">
-            Untuk pertanyaan lebih lanjut, hubungi admin EXplorent melalui WhatsApp atau datang langsung ke lokasi kami.
-        </p>
+        
     </div>
 </main>
 @endsection
