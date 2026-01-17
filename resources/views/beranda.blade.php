@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
+
 @section('content')
+
+
+
+{{-- WELCOME USER (LOGIN WAJIB) --}}
+@auth
+<div class="container" style="margin-top:20px">
+    <h1>Selamat datang, {{ Auth::user()->name }}</h1>
+</div>
+@endauth
+
+
 <!-- HERO SECTION DENGAN BACKGROUND GAMBAR -->
 <section class="hero-section">
     <div class="hero-content">
