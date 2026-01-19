@@ -13,6 +13,7 @@ class PageController extends Controller
         $produk = DB::table('barang')
             ->join('kategori', 'barang.kategori_id', '=', 'kategori.id')
             ->select(
+                'barang.id',
                 'barang.nama_barang as nama',
                 'barang.harga_per_hari',
                 'kategori.nama_kategori'
@@ -22,8 +23,10 @@ class PageController extends Controller
             ->get()
             ->map(function($item) {
                 return [
+                    'id' => $item->id,
                     'nama' => $item->nama,
                     'harga' => 'Rp' . number_format($item->harga_per_hari, 0, ',', '.'),
+                    'raw_harga' => $item->harga_per_hari,
                     'periode' => '/ hari'
                 ];
             });
@@ -42,9 +45,11 @@ class PageController extends Controller
             ->get()
             ->map(function($item, $index) {
                 return [
+                    'id' => $item->id,
                     'no' => $index + 1,
                     'nama' => $item->nama,
                     'harga' => 'Rp' . number_format($item->harga_per_hari, 0, ',', '.'),
+                    'raw_harga' => $item->harga_per_hari,
                     'stok' => $item->stok,
                     'kondisi' => $item->kondisi
                 ];
