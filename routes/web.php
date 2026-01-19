@@ -47,12 +47,45 @@ Route::get('/beranda-login', function () {
     return view('beranda');
 })->middleware('auth');
 
+
+
 /*
 |--------------------------------------------------------------------------
-| KERANJANG SEWA (CART)
+| GUEST (BELUM LOGIN)
 |--------------------------------------------------------------------------
 */
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
-Route::get('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-Route::get('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'loginProcess']);
+
+    Route::get('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/register', [AuthController::class, 'registerProcess']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| AUTH (SUDAH LOGIN)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::get('/beranda', function () {
+        return view('beranda');
+    });
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+/*
+|--------------------------------------------------------------------------
+| DEFAULT
+|--------------------------------------------------------------------------
+*/
+Route::get('/', function () {
+    return redirect('/beranda');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/beranda', function () {
+        return view('beranda');
+    });
+});
