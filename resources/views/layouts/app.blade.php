@@ -754,7 +754,7 @@
     <div class="navbar-container">
         <div class="navbar-logo">
              <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ asset('img/logo.png') }}" alt="Hori Club Logo" class="logo-image">
+                <img src="{{ asset('img/logo.png') }}" alt="EXplorent" class="logo-image">
             </a>
                 
             <a class="navbar-brand font-weight-bold" href="/">EXplorent</a>

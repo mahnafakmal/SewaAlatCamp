@@ -91,7 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-Route::get('/', function () {
+Route::get('/login', function () {
     return redirect()->route('login');
 });
 
