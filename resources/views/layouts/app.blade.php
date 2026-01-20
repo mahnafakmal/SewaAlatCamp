@@ -1080,13 +1080,18 @@ try {
         }
     }
 
-    // Initialize cart on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            cart = JSON.parse(localStorage.getItem('cart')) || [];
-            updateCartUI();
-        });
-        console.log('Cart initialized:', cart);
-    });
+// Initialize cart on page load
+document.addEventListener('DOMContentLoaded', function () {
+    try {
+        cart = JSON.parse(localStorage.getItem('cart')) || [];
+    } catch (e) {
+        cart = [];
+        localStorage.removeItem('cart');
+    }
+    updateCartUI();
+    console.log('Cart initialized:', cart);
+});
+
 
     // CUSTOM NOTIFICATION FUNCTION
     function showNotification(message, type = 'info') {
