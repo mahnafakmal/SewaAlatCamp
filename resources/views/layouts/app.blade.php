@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <title>EXplorent Outdoor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <body>
+
+    {{-- NAVBAR --}}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {{-- CONTENT --}}
+            <div class="col-md-9">
+                @yield('content')
+            </div>
+
+            {{-- KERANJANG --}}
+            <div class="col-md-3">
+                {{-- kode keranjang --}}
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
 
     {{-- CSS INTERNAL --}}
     <style>
@@ -967,6 +989,7 @@ try {
                     showNotification('Jumlah item berkurang', 'info');
                 }
             }
+            
         }
     }
 
