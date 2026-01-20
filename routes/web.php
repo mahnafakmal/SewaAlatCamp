@@ -119,6 +119,7 @@ Route::post('/cart/add', function (Request $request) {
 
 // TAMBAH KE KERANJANG
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 // LIHAT KERANJANG
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

@@ -32,18 +32,19 @@
             <p style="color:#dc2626; font-weight:bold;">
                 Mulai {{ $item['harga'] }} {{ $item['periode'] }}
             </p>
+<form action="{{ route('cart.add') }}" method="POST">
+    @csrf
+    <input type="hidden" name="id" value="{{ $item['id'] }}">
+    <input type="hidden" name="nama" value="{{ $item['nama'] }}">
+    <input type="hidden" name="harga" value="{{ $item['harga'] }}">
 
-            <button
-                type="button"
-                onclick="addToCart(
-                    {{ $item['id'] }},
-                    '{{ $item['nama'] }}',
-                    '{{ $item['harga'] }}'
-                )"
+    <button type="submit" class="btn-sewa"
                 style="background:#dc2626; color:white; border:none;
                 padding:10px 20px; border-radius:6px; width:100%;">
                 Tambah ke Keranjang
             </button>
+
+</form>
 
         </div>
         @endforeach
@@ -83,18 +84,19 @@
                             <span style="background-color: #eff6ff; color: #1e40af; padding: 4px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">{{ $item['kondisi'] }}</span>
                         </td>
                         <td style="padding: 16px 24px; text-align: center;">
-                            <button
-                                type="button"
-                                onclick="addToCart(
-                                    {{ $item['id'] }},
-                                    '{{ $item['nama'] }}',
-                                    '{{ $item['harga'] }}'
-                                )"
+<form action="{{ route('cart.add') }}" method="POST">
+    @csrf
+    <input type="hidden" name="id" value="{{ $item['id'] }}">
+    <input type="hidden" name="nama" value="{{ $item['nama'] }}">
+    <input type="hidden" name="harga" value="{{ $item['harga'] }}">
+
+    <button type="submit" class="btn btn-primary">
                                 style="background-color:#2563eb; color:white; border:none;
                                 padding:6px 16px; border-radius:6px; cursor:pointer;
                                 font-size:0.875rem; font-weight:500;">
                                 + Keranjang
                             </button>
+</form>
 
                         </td>
                 </tr>

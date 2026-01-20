@@ -13,12 +13,10 @@ class CartController extends Controller
         $id = $request->id;
 
         if (isset($cart[$id])) {
-            // jika sudah ada, tambah qty
             $cart[$id]['qty'] += 1;
         } else {
-            // jika belum ada, tambahkan baru
             $cart[$id] = [
-                'id'    => $request->id,
+                'id'    => $id,
                 'nama'  => $request->nama,
                 'harga' => $request->harga,
                 'qty'   => 1,
@@ -27,12 +25,12 @@ class CartController extends Controller
 
         session()->put('cart', $cart);
 
-        return back()->with('success', 'Produk ditambahkan ke keranjang');
+        return back();
     }
 
-    public function index()
+    public function clear()
     {
-        $cart = session()->get('cart', []);
-        return view('cart', compact('cart'));
+        session()->forget('cart');
+        return back();
     }
 }
