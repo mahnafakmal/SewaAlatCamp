@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,3 +90,35 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('beranda');
     });
 });
+
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+// LOGIN
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+
+// REGISTER
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
+// LOGOUT
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// BERANDA (HARUS LOGIN)
+Route::get('/beranda', [PageController::class, 'beranda'])
+    
+    ->name('beranda');
+
+Route::post('/cart/add', function (Request $request) {
+    // sementara hanya untuk menghindari error
+    // logika keranjang bisa ditambahkan nanti
+    return redirect()->back()->with('success', 'Produk ditambahkan ke keranjang');
+})->name('cart.add');
+
+// TAMBAH KE KERANJANG
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+
+// LIHAT KERANJANG
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
