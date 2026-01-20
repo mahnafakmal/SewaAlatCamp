@@ -765,6 +765,11 @@
     </style>
 </head>
 <body>
+<!-- CART DATA -->
+    <div id="cartData"
+         data-cart='@json(session("cart", []))'>
+    </div>
+
 
 <!-- NAVBAR -->
 <header class="navbar">
@@ -782,6 +787,7 @@
             <a href="{{ route('cara-sewa') }}">Cara Sewa</a>
             <a href="{{ route('peraturan') }}">Peraturan Sewa</a>
             <a href="{{ route('info') }}">Info</a>
+            <a href="{{ route('logout') }}">Logout</a>
             
         </nav>
 
@@ -794,7 +800,9 @@
             <!-- CART ICON -->
             <div class="cart-icon" onclick="toggleCart()">
                 🛒
-                <span class="cart-badge" id="cartBadge">0</span>
+                <span class="cart-badge" id="cartBadge">
+                    {{ collect(session('cart', []))->sum('qty') }}
+                    </span>
             </div>
         </div>
 
@@ -889,8 +897,16 @@
 </footer>
 
 <script>
-    // CART FUNCTIONALITY
-    let cart = [];
+    // CART FUNCTIONALITY (SAFE INIT)
+   let cart = [];
+
+try {
+    cart = JSON.parse(localStorage.getItem('cart')) || [];
+} catch (e) {
+    cart = [];
+    localStorage.removeItem('cart');
+}
+
 
     // Load cart from memory (not localStorage)
     function loadCart() {
@@ -925,6 +941,8 @@
         
         updateCartUI();
         console.log('Current cart:', cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+
         
         // Show notification
         showNotification(nama + ' berhasil ditambahkan ke keranjang!', 'success');
@@ -947,6 +965,7 @@
         }
         
         cart = [];
+        localStorage.removeItem('cart'); // ⬅️ TAMBAHAN WAJIB
         updateCartUI();
         showNotification('Keranjang telah dikosongkan!', 'success');
     }
@@ -1026,6 +1045,7 @@
         }
         
         const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+        cartBadge.textContent = totalItems;
         const total = cart.reduce((sum, item) => {
             const price = parseInt(item.harga.replace(/[^0-9]/g, ''));
             return sum + (price * item.qty);
@@ -1083,12 +1103,18 @@
         }
     }
 
-    // Initialize cart on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        loadCart();
-        updateCartUI();
-        console.log('Cart initialized:', cart);
-    });
+// Initialize cart on page load
+document.addEventListener('DOMContentLoaded', function () {
+    try {
+        cart = JSON.parse(localStorage.getItem('cart')) || [];
+    } catch (e) {
+        cart = [];
+        localStorage.removeItem('cart');
+    }
+    updateCartUI();
+    console.log('Cart initialized:', cart);
+});
+
 
     // CUSTOM NOTIFICATION FUNCTION
     function showNotification(message, type = 'info') {
@@ -1137,3 +1163,5 @@
 
 </body>
 </html>
+
+

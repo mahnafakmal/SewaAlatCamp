@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    // 🔹 Tambah item ke keranjang
     public function add(Request $request)
     {
         $cart = session()->get('cart', []);
@@ -14,50 +13,26 @@ class CartController extends Controller
         $id = $request->id;
 
         if (isset($cart[$id])) {
-            $cart[$id]['qty']++;
+            // jika sudah ada, tambah qty
+            $cart[$id]['qty'] += 1;
         } else {
+            // jika belum ada, tambahkan baru
             $cart[$id] = [
-                'nama' => $request->nama,
+                'id'    => $request->id,
+                'nama'  => $request->nama,
                 'harga' => $request->harga,
-                'qty' => 1
+                'qty'   => 1,
             ];
         }
 
         session()->put('cart', $cart);
 
-        return back();
+        return back()->with('success', 'Produk ditambahkan ke keranjang');
     }
 
-    // 🔹 Update jumlah (+ / -)
-    public function update(Request $request)
+    public function index()
     {
-        $cart = session()->get('cart');
-
-        if (isset($cart[$request->id])) {
-            $cart[$request->id]['qty'] = $request->qty;
-            session()->put('cart', $cart);
-        }
-
-        return back();
-    }
-
-    // 🔹 Hapus 1 item
-    public function remove($id)
-    {
-        $cart = session()->get('cart');
-
-        if (isset($cart[$id])) {
-            unset($cart[$id]);
-            session()->put('cart', $cart);
-        }
-
-        return back();
-    }
-
-    // 🔹 Hapus semua
-    public function clear()
-    {
-        session()->forget('cart');
-        return back();
+        $cart = session()->get('cart', []);
+        return view('cart', compact('cart'));
     }
 }
