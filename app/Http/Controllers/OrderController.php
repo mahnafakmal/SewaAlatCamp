@@ -41,6 +41,12 @@ class OrderController extends Controller
         $total = 0;
         foreach ($cart as $item) {
             $total += $item['harga'] * $item['qty'];
+            
+            // Cek stok tersedia
+            $barang = DB::table('barang')->where('id', $item['id'])->first();
+            if (!$barang || $barang->stok < $item['qty']) {
+                return back()->with('error', 'Stok barang "' . $item['nama'] . '" tidak mencukupi. Sisa stok: ' . ($barang->stok ?? 0));
+            }
         }
 
         DB::beginTransaction();

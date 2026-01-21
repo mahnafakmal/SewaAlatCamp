@@ -29,11 +29,25 @@ class PageController extends Controller
 
         $produk = $produk->get()
             ->map(function ($item) {
+                // Cek apakah ada gambar di public/barang sesuai nama produk
+                // Kita coba cocokan nama file dengan nama produk + .webp
+                // Gunakan glob untuk pencarian case-insensitive jika perlu, atau exact match dulu
+                
+                $imageName = $item->nama . '.webp';
+                $imagePath = 'barang/' . $imageName;
+                
+                if (file_exists(public_path($imagePath))) {
+                    $gambarUrl = asset($imagePath);
+                } else {
+                    // Fallback to existing image or placeholder
+                    $gambarUrl = $item->gambar ?? asset('img/placeholder.jpg');
+                }
+
                 return [
                     'id' => $item->id,
                     'nama' => $item->nama,
                     'harga' => $item->harga,
-                    'gambar' => $item->gambar,
+                    'gambar' => $gambarUrl,
                 ];
             });
 

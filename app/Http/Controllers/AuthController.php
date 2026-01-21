@@ -41,12 +41,16 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role' => 'user' // Default role
-        ]);
+        try {
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role' => 'user' // Default role
+            ]);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal membuat akun: ' . $e->getMessage())->withInput();
+        }
 
         return redirect()->route('login');
     }
