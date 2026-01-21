@@ -122,3 +122,27 @@ Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 
 // LIHAT KERANJANG
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+
+
+Route::post('/cart/add', function (Request $request) {
+    $cart = session()->get('cart', []);
+
+    $id = $request->id;
+
+    if (isset($cart[$id])) {
+        $cart[$id]['qty'] += 1;
+    } else {
+        $cart[$id] = [
+            'id' => $id,
+            'nama' => $request->nama,
+            'harga' => $request->harga,
+            'qty' => 1
+        ];
+    }
+
+    session()->put('cart', $cart);
+
+    return back();
+})->name('cart.add');
+

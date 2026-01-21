@@ -791,20 +791,31 @@
             
         </nav>
 
-        <div class="navbar-right">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Cari barang..." onkeyup="searchBarang(event)">
-                <button onclick="searchBarang()">Cari</button>
-            </div>
+<div class="navbar-right">
+    <div class="search-box">
+        <input type="text" placeholder="Cari barang...">
+        <button>Cari</button>
+    </div>
 
-            <!-- CART ICON -->
-            <div class="cart-icon" onclick="toggleCart()">
-                🛒
-                <span class="cart-badge" id="cartBadge">
-                    {{ collect(session('cart', []))->sum('qty') }}
-                    </span>
-            </div>
-        </div>
+    {{-- ICON KERANJANG (LANGKAH 2 DI SINI) --}}
+    <div style="position: relative; color: white; font-size: 22px;">
+        🛒
+        <span style="
+            position:absolute;
+            top:-8px;
+            right:-10px;
+            background:yellow;
+            color:black;
+            border-radius:50%;
+            padding:2px 7px;
+            font-size:12px;
+            font-weight:bold;
+        ">
+            {{ collect(session('cart', []))->sum('qty') }}
+        </span>
+    </div>
+</div>
+
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
