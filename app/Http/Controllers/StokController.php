@@ -67,16 +67,22 @@ class StokController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'kode' => 'required|string|unique:barang,kode',
             'kategori' => 'required|string',
+            'kondisi' => 'required|string',
             'stok' => 'required|integer|min:0',
             'harga' => 'required|numeric|min:0',
             'deskripsi' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         try {
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('barang', 'public');
+                $validated['image'] = basename($imagePath);
+            }
+
             Barang::create($validated);
-            return redirect()->route('stok.index')->with('success', 'Barang berhasil ditambahkan');
+            return redirect()->route('edit-stok.index')->with('success', 'Barang berhasil ditambahkan');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menambahkan barang: ' . $e->getMessage());
         }
@@ -93,20 +99,33 @@ class StokController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Barang $barang)
+    public function update(Request $request, $id)
     {
+        $barang = Barang::findOrFail($id);
+
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'kode' => 'required|string|unique:barang,kode,' . $barang->id,
             'kategori' => 'required|string',
+            'kondisi' => 'required|string',
             'stok' => 'required|integer|min:0',
             'harga' => 'required|numeric|min:0',
             'deskripsi' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         try {
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($barang->image && \Illuminate\Support\Facades\Storage::disk('public')->exists('barang/' . $barang->image)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete('barang/' . $barang->image);
+                }
+
+                $imagePath = $request->file('image')->store('barang', 'public');
+                $validated['image'] = basename($imagePath);
+            }
+
             $barang->update($validated);
-            return redirect()->route('stok.index')->with('success', 'Barang berhasil diperbarui');
+            return redirect()->route('edit-stok.index')->with('success', 'Barang berhasil diperbarui');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal memperbarui barang: ' . $e->getMessage());
         }
@@ -115,11 +134,12 @@ class StokController extends Controller
     /**
      * Remove the specified resource from storage (Soft Delete).
      */
-    public function destroy(Barang $barang)
+    public function destroy($id)
     {
         try {
+            $barang = Barang::findOrFail($id);
             $barang->delete(); // Soft delete
-            return redirect()->route('stok.index')->with('success', 'Barang berhasil dihapus');
+            return redirect()->route('edit-stok.index')->with('success', 'Barang berhasil dihapus');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menghapus barang: ' . $e->getMessage());
         }
@@ -133,7 +153,7 @@ class StokController extends Controller
         try {
             $barang = Barang::withTrashed()->findOrFail($id);
             $barang->restore();
-            return redirect()->route('stok.index')->with('success', 'Barang berhasil dipulihkan');
+            return redirect()->route('edit-stok.index')->with('success', 'Barang berhasil dipulihkan');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal memulihkan barang: ' . $e->getMessage());
         }
@@ -147,7 +167,7 @@ class StokController extends Controller
         try {
             $barang = Barang::withTrashed()->findOrFail($id);
             $barang->forceDelete();
-            return redirect()->route('stok.index')->with('success', 'Barang berhasil dihapus permanen');
+            return redirect()->route('edit-stok.index')->with('success', 'Barang berhasil dihapus permanen');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menghapus barang: ' . $e->getMessage());
         }

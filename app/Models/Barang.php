@@ -25,14 +25,22 @@ class Barang extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'nama',
-        'harga',
+        'nama_barang',
+        'harga_per_hari',
         'stok',
         'kondisi',
+        'kategori_id',
+        'deskripsi',
+        'gambar',
+        'is_populer',
+        'is_active',
+        // Virtual fields for compatibility
+        'nama',
+        'harga',
+        'image',
         'kategori',
         'keterangan',
-        'image',
-        'is_active',
+        'kode', // If used in controller but not in DB? distinct from id?
     ];
 
     /**
@@ -41,9 +49,10 @@ class Barang extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'harga' => 'integer',
+        'harga_per_hari' => 'integer',
         'stok' => 'integer',
         'is_active' => 'boolean',
+        'is_populer' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -62,13 +71,51 @@ class Barang extends Model
      * @var array<int, string>
      */
     protected $appends = [
+        'nama',
+        'harga',
+        'image',
+        'kategori',
         'formatted_harga',
         'stock_status',
         'kondisi_badge',
     ];
 
     // ========================================
-    // ACCESSORS (Getters)
+    // ACCESSORS (Getters) COMPATIBILITY
+    // ========================================
+
+    public function getNamaAttribute()
+    {
+        return $this->attributes['nama_barang'] ?? null;
+    }
+
+    public function getHargaAttribute()
+    {
+        return $this->attributes['harga_per_hari'] ?? 0;
+    }
+
+    public function getImageAttribute()
+    {
+        return $this->attributes['gambar'] ?? null;
+    }
+
+    public function getKeteranganAttribute()
+    {
+        return $this->attributes['deskripsi'] ?? null;
+    }
+
+    public function getKategoriAttribute()
+    {
+        if (isset($this->attributes['kategori_id'])) {
+            // Using DB query for direct compatibility, though Relation is better
+            $cat = DB::table('kategori')->where('id', $this->attributes['kategori_id'])->first();
+            return $cat ? $cat->nama_kategori : null;
+        }
+        return null;
+    }
+
+    // ========================================
+    // OTHER ACCESSORS
     // ========================================
 
     /**
@@ -147,29 +194,42 @@ class Barang extends Model
     }
 
     // ========================================
-    // MUTATORS (Setters)
+    // MUTATORS (Setters) COMPATIBILITY
     // ========================================
 
-    /**
-     * Set nama to title case
-     *
-     * @param string $value
-     * @return void
-     */
     public function setNamaAttribute($value)
     {
-        $this->attributes['nama'] = ucwords(strtolower($value));
+        $this->attributes['nama_barang'] = ucwords(strtolower($value));
     }
 
-    /**
-     * Set harga (ensure positive integer)
-     *
-     * @param mixed $value
-     * @return void
-     */
     public function setHargaAttribute($value)
     {
-        $this->attributes['harga'] = abs((int) $value);
+        $this->attributes['harga_per_hari'] = abs((int) $value);
+    }
+
+    public function setImageAttribute($value)
+    {
+        $this->attributes['gambar'] = $value;
+    }
+
+    public function setKeteranganAttribute($value)
+    {
+        $this->attributes['deskripsi'] = $value;
+    }
+
+    public function setKategoriAttribute($value)
+    {
+        $kategori = DB::table('kategori')->where('nama_kategori', $value)->first();
+        if ($kategori) {
+            $this->attributes['kategori_id'] = $kategori->id;
+        } else {
+            $id = DB::table('kategori')->insertGetId([
+                'nama_kategori' => $value,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+            $this->attributes['kategori_id'] = $id;
+        }
     }
 
     /**
@@ -254,10 +314,10 @@ class Barang extends Model
      */
     public function scopeSearch($query, $keyword)
     {
-        return $query->where(function($q) use ($keyword) {
+        return $query->where(function ($q) use ($keyword) {
             $q->where('nama', 'LIKE', "%{$keyword}%")
-              ->orWhere('kategori', 'LIKE', "%{$keyword}%")
-              ->orWhere('keterangan', 'LIKE', "%{$keyword}%");
+                ->orWhere('kategori', 'LIKE', "%{$keyword}%")
+                ->orWhere('keterangan', 'LIKE', "%{$keyword}%");
         });
     }
 
@@ -510,22 +570,22 @@ class Barang extends Model
                 $barang->is_active = true;
             }
         });
-            static::updating(function ($barang) {
-                if ($barang->isDirty('stok')) {
-                    Log::info('Stok barang berubah', [
-                        'barang_id' => $barang->id,
-                        'nama' => $barang->nama,
-                        'stok_lama' => $barang->getOriginal('stok'),
-                        'stok_baru' => $barang->stok,
-                    ]);
-                }
-            });
-
-            static::deleting(function ($barang) {
-                Log::info('Barang dihapus', [
+        static::updating(function ($barang) {
+            if ($barang->isDirty('stok')) {
+                Log::info('Stok barang berubah', [
                     'barang_id' => $barang->id,
                     'nama' => $barang->nama,
+                    'stok_lama' => $barang->getOriginal('stok'),
+                    'stok_baru' => $barang->stok,
                 ]);
-            });
+            }
+        });
+
+        static::deleting(function ($barang) {
+            Log::info('Barang dihapus', [
+                'barang_id' => $barang->id,
+                'nama' => $barang->nama,
+            ]);
+        });
     }
 }

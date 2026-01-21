@@ -2,161 +2,104 @@
 
 @section('content')
 
-{{-- ================= HERO SECTION ================= --}}
-<section class="hero-section">
-    <div class="hero-content">
-        <h2>Persewaan Alat Camping & Hiking</h2>
-        <p>
-            Menyediakan alat camping, hiking, dan outdoor travelling
-            lengkap dengan harga terjangkau.
-        </p>
-    </div>
-</section>
-
-{{-- ================= MAIN CONTENT ================= --}}
-<main class="container" style="padding-bottom: 60px;">
-
-    {{-- PRODUK POPULER --}}
-    <section style="margin-bottom: 60px;">
-        <h2 style="text-align:center; font-size:2rem; font-weight:bold; margin-bottom:30px;">
-            Produk Populer
-        </h2>
-
-        <div class="produk-grid"
-            style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px;">
-
-            @foreach($produk as $item)
-                <div class="produk-card"
-                    style="background:white; border:1px solid #e5e7eb; border-radius:8px;
-                    padding:24px; text-align:center; box-shadow:0 4px 6px rgba(0,0,0,0.1);">
-
-                    <h3 style="font-size:1.25rem; font-weight:600;">
-                        {{ $item['nama'] }}
-                    </h3>
-
-                    <p style="color:#dc2626; font-weight:bold;">
-                        Mulai {{ $item['harga'] }} {{ $item['periode'] }}
-                    </p>
-
-                    <button
-                        type="button"
-                        onclick="addToCart(
-                            {{ $item['id'] }},
-                            '{{ $item['nama'] }}',
-                            '{{ $item['harga'] }}'
-                        )"
-                        style="background:#dc2626; color:white; border:none;
-                        padding:10px 20px; border-radius:6px; width:100%;">
-                        Tambah ke Keranjang
-                    </button>
-
-                </div>
-            @endforeach
-
+    {{-- HERO SECTION --}}
+    <section class="hero">
+        <div class="container text-center">
+            <h1>Persewaan Alat Camping & Hiking</h1>
+            <p class="mb-4">
+                Menyediakan alat camping, hiking, dan outdoor travelling
+                lengkap dengan harga terjangkau.
+            </p>
+            <form action="{{ route('beranda') }}" method="GET"
+                style="max-width: 500px; margin: 0 auto; display: flex; gap: 10px;">
+                <input type="text" name="search" class="form-control" placeholder="Cari perlengkapan..."
+                    value="{{ request('search') }}">
+                <button type="submit" class="btn btn-primary" style="white-space: nowrap;">Cari</button>
+            </form>
         </div>
     </section>
 
-    {{-- DAFTAR PERALATAN --}}
-    <section>
-        <h2 style="font-size:1.5rem; font-weight:bold; margin-bottom:24px;">
-            Daftar Lengkap Peralatan
-        </h2>
+    <div class="container">
 
-        <div style="overflow-x:auto; background:white; border-radius:8px;">
-            <table style="width:100%; border-collapse:collapse;">
-                <thead style="background:#f9fafb;">
-                    <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Harga</th>
-                        <th>Stok</th>
-                        <th>Kondisi</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($peralatan as $item)
-                        <tr style="border-bottom: 1px solid #e5e7eb;">
-                            <td style="padding:16px 24px;">{{ $item['no'] }}</td>
-                            <td style="padding:16px 24px; font-weight:500;">
-                                {{ $item['nama'] }}
-                            </td>
-                            <td style="padding:16px 24px; color:#059669; font-weight:600;">
-                                {{ $item['harga'] }}
-                            </td>
-                            <td style="padding:16px 24px;">
-                                <span style="background:#ecfdf5; color:#065f46;
-                                padding:4px 10px; border-radius:9999px; font-size:12px;">
-                                    {{ $item['stok'] }} unit
-                                </span>
-                            </td>
-                            <td style="padding:16px 24px;">
-                                <span style="background:#eff6ff; color:#1e40af;
-                                padding:4px 10px; border-radius:9999px; font-size:12px;">
-                                    {{ $item['kondisi'] }}
-                                </span>
-                            </td>
-                            <td style="padding:16px 24px; text-align:center;">
-                                <button
-                                    type="button"
-                                    onclick="addToCart(
-                                        {{ $item['id'] }},
-                                        '{{ $item['nama'] }}',
-                                        '{{ $item['harga'] }}'
-                                    )"
-                                    style="background:#2563eb; color:white; border:none;
-                                    padding:6px 16px; border-radius:6px;">
-                                    + Keranjang
+        {{-- PRODUK POPULER --}}
+        <section class="mb-4">
+            <h2 class="text-center mb-4">Produk Populer</h2>
+
+            <div class="grid">
+                @foreach($produk as $item)
+                    <div class="card">
+                        <div class="card-img">
+                            {{-- Placeholder image if none provided --}}
+                            <img src="{{ $item['gambar'] ?? asset('img/placeholder.jpg') }}" alt="{{ $item['nama'] }}">
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 class="card-title">{{ $item['nama'] }}</h3>
+                            <p class="card-price">Rp {{ number_format($item['harga'], 0, ',', '.') }}</p>
+
+                            <form action="{{ route('cart.add') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="id" value="{{ $item['id'] }}">
+                                <input type="hidden" name="nama" value="{{ $item['nama'] }}">
+                                <input type="hidden" name="harga" value="{{ $item['harga'] }}">
+
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    Tambah ke Keranjang
                                 </button>
-                            </td>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+
+        {{-- DAFTAR PERALATAN --}}
+        <section class="py-5">
+            <h2 class="mb-4">Daftar Lengkap Peralatan</h2>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Harga</th>
+                            <th>Stok</th>
+                            <th>Kondisi</th>
+                            <th>Aksi</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </section>
+                    </thead>
+                    <tbody>
+                        @foreach($peralatan as $item)
+                            <tr>
+                                <td>{{ $item['no'] }}</td>
+                                <td style="font-weight: 500;">{{ $item['nama'] }}</td>
+                                <td style="color: var(--primary-color); font-weight: 600;">
+                                    Rp {{ number_format($item['harga'], 0, ',', '.') }}
+                                </td>
+                                <td>
+                                    <span class="badge badge-success">{{ $item['stok'] }} unit</span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-warning">{{ $item['kondisi'] }}</span>
+                                </td>
+                                <td>
+                                    <form action="{{ route('cart.add') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $item['id'] }}">
+                                        <input type="hidden" name="nama" value="{{ $item['nama'] }}">
+                                        <input type="hidden" name="harga" value="{{ $item['harga'] }}">
 
-</main>
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            + Keranjang
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-{{-- ================= HERO STYLE ================= --}}
-<style>
-.hero-section {
-    padding-top: 100px;                 /* tinggi navbar */
-    height: calc(70vh + 100px);         /* hero + offset navbar */
-
-    background-image:
-        linear-gradient(
-            rgba(0,0,0,0.55),
-            rgba(0,0,0,0.55)
-        ),
-        url('{{ asset("img/gunung.jpeg") }}');
-
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-}
-
-.hero-content {
-    max-width: 900px;
-    padding: 0 20px;
-}
-
-.hero-content h2 {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 16px;
-}
-
-.hero-content p {
-    font-size: 1.25rem;
-    opacity: 0.95;
-}
-</style>
-
+    </div>
 @endsection

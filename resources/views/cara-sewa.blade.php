@@ -1,30 +1,45 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="max-w-4xl mx-auto p-8">
-    <h1 class="text-3xl font-bold mb-6">Cara Sewa Alat Outdoor</h1>
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 style="color: var(--primary-color);">Cara Sewa Alat Outdoor</h1>
+            <p style="color: #6b7280;">Panduan mudah menyewa peralatan di EXplorent</p>
+        </div>
 
-    <div class="space-y-6">
-        <div class="step">
-            <h3 class="font-semibold">1. Pilih Peralatan</h3>
-            <p class="text-gray-600">Pilih alat camping/hiking sesuai kebutuhan.</p>
-        </div>
-        <div class="step">
-            <h3 class="font-semibold">2. Hubungi Admin</h3>
-            <p class="text-gray-600">Konfirmasi stok dan jadwal sewa.</p>
-        </div>
-        <div class="step">
-            <h3 class="font-semibold">3. Pembayaran</h3>
-            <p class="text-gray-600">Lakukan pembayaran DP atau lunas.</p>
-        </div>
-        <div class="step">
-            <h3 class="font-semibold">4. Pengambilan Alat</h3>
-            <p class="text-gray-600">Ambil alat sesuai waktu yang disepakati.</p>
-        </div>
-        <div class="step">
-            <h3 class="font-semibold">5. Pengembalian</h3>
-            <p class="text-gray-600">Kembalikan alat dalam kondisi baik.</p>
+        <div class="grid">
+            <div class="card p-4">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">1. Pilih Peralatan</h3>
+                <p style="color: #4b5563;">Cari dan pilih peralatan camping atau hiking yang Anda butuhkan melalui halaman
+                    Beranda.</p>
+            </div>
+
+            <div class="card p-4">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">2. Masukkan Keranjang</h3>
+                <p style="color: #4b5563;">Klik "Tambah ke Keranjang" untuk alat yang ingin disewa. Anda bisa menyewa lebih
+                    dari satu alat.</p>
+            </div>
+
+            <div class="card p-4">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">3. Checkout</h3>
+                <p style="color: #4b5563;">Buka keranjang, periksa pesanan Anda, lalu klik "Lanjut ke Pembayaran".</p>
+            </div>
+
+            <div class="card p-4">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">4. Isi Data & Bayar</h3>
+                <p style="color: #4b5563;">Lengkapi data diri dan alamat. Lakukan pembayaran sesuai metode yang dipilih.</p>
+            </div>
+
+            <div class="card p-4">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">5. Ambil Alat</h3>
+                <p style="color: #4b5563;">Ambil alat di lokasi kami atau tunggu pengiriman (jika tersedia). Jangan lupa
+                    bawa ID asli.</p>
+            </div>
+
+            <div class="card p-4">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">6. Kembalikan</h3>
+                <p style="color: #4b5563;">Setelah selesai, kembalikan alat tepat waktu untuk menghindari denda.</p>
+            </div>
         </div>
     </div>
-</main>
 @endsection

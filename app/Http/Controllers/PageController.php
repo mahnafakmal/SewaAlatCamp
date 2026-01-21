@@ -15,41 +15,51 @@ class PageController extends Controller
             ->select(
                 'barang.id',
                 'barang.nama_barang as nama',
-                'barang.harga_per_hari',
+                'barang.harga_per_hari as harga',
+                'barang.gambar', // Assuming this column exists or will be added
                 'kategori.nama_kategori'
             )
             ->where('barang.is_populer', true)
-            ->where('barang.stok', '>', 0)
-            ->get()
-            ->map(function($item) {
+            ->where('barang.stok', '>', 0);
+
+        if (request('search')) {
+            // Jika search ada, kita filter juga produk populer atau biarkan default
+            // Tapi biasanya search mencakup semua. Kita akan fokus search di $peralatan
+        }
+
+        $produk = $produk->get()
+            ->map(function ($item) {
                 return [
                     'id' => $item->id,
                     'nama' => $item->nama,
-                    'harga' => 'Rp' . number_format($item->harga_per_hari, 0, ',', '.'),
-                    'raw_harga' => $item->harga_per_hari,
-                    'periode' => '/ hari'
+                    'harga' => $item->harga,
+                    'gambar' => $item->gambar,
                 ];
             });
 
-        // Ambil semua peralatan dari database
-        $peralatan = DB::table('barang')
+        // Ambil semua peralatan dari database (Main Catalog)
+        $query = DB::table('barang')
             ->select(
                 'barang.id',
                 'barang.nama_barang as nama',
-                'barang.harga_per_hari',
+                'barang.harga_per_hari as harga',
                 'barang.stok',
                 'barang.kondisi'
             )
-            ->where('barang.stok', '>', 0)
-            ->orderBy('barang.id')
+            ->where('barang.stok', '>', 0);
+
+        if (request('search')) {
+            $query->where('barang.nama_barang', 'like', '%' . request('search') . '%');
+        }
+
+        $peralatan = $query->orderBy('barang.id')
             ->get()
-            ->map(function($item, $index) {
+            ->map(function ($item, $index) {
                 return [
                     'id' => $item->id,
                     'no' => $index + 1,
                     'nama' => $item->nama,
-                    'harga' => 'Rp' . number_format($item->harga_per_hari, 0, ',', '.'),
-                    'raw_harga' => $item->harga_per_hari,
+                    'harga' => $item->harga,
                     'stok' => $item->stok,
                     'kondisi' => $item->kondisi
                 ];

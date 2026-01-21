@@ -1,27 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-5">
-    <h3>Login</h3>
-
-    @error('email')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
-
-    <form method="POST" action="/login">
-        @csrf
-        <div class="mb-3">
-            <label>Email</label>
-            <input type="email" name="email" class="form-control">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Login</h2>
+            <p>Masuk untuk memulai petualanganmu</p>
         </div>
 
-        <div class="mb-3">
-            <label>Password</label>
-            <input type="password" name="password" class="form-control">
-        </div>
+        @if($errors->any())
+            <div
+                style="background-color: #fef2f2; color: #991b1b; padding: 10px; border-radius: 6px; margin-bottom: 1rem; border: 1px solid #fecaca;">
+                <ul style="margin-left: 1.5rem; list-style-type: disc;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        <button class="btn btn-primary">Login</button>
-        <a href="/register">Register</a>
-    </form>
-</div>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="mb-4">
+                <label class="block mb-2 font-weight-bold">Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="nama@email.com" required autofocus>
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-2 font-weight-bold">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="********" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block mb-4">Masuk Sekarang</button>
+
+            <div class="text-center">
+                <p style="font-size: 0.9rem;">Belum punya akun? <a href="{{ route('register') }}"
+                        style="color: var(--primary-color); font-weight: 600;">Daftar disini</a></p>
+            </div>
+        </form>
+    </div>
 @endsection
