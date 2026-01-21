@@ -202,7 +202,7 @@ h6 {
    HERO SECTION
    ========================================= */
 .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../img/hero-bg.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../img/gunung.jpeg');
     /* Ensure you have an image or fallback */
     background-size: cover;
     background-position: center;
