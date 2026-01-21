@@ -9,64 +9,27 @@ class PageController extends Controller
 {
     public function beranda()
     {
-        // Ambil produk populer dari database
-        $produk = DB::table('barang')
-            ->join('kategori', 'barang.kategori_id', '=', 'kategori.id')
-            ->select(
-                'barang.id',
-                'barang.nama_barang as nama',
-                'barang.harga_per_hari as harga',
-                'barang.gambar', // Assuming this column exists or will be added
-                'kategori.nama_kategori'
-            )
-            ->where('barang.is_populer', true)
-            ->where('barang.stok', '>', 0);
-
-        if (request('search')) {
-            // Jika search ada, kita filter juga produk populer atau biarkan default
-            // Tapi biasanya search mencakup semua. Kita akan fokus search di $peralatan
-        }
-
-        $produk = $produk->get()
+        // Ambil produk populer (Eloquent)
+        $produk = \App\Models\Barang::where('is_populer', true)
+            ->where('stok', '>', 0)
+            ->get()
             ->map(function ($item) {
-                // Cek apakah ada gambar di public/barang sesuai nama produk
-                // Kita coba cocokan nama file dengan nama produk + .webp
-                // Gunakan glob untuk pencarian case-insensitive jika perlu, atau exact match dulu
-                
-                $imageName = $item->nama . '.webp';
-                $imagePath = 'barang/' . $imageName;
-                
-                if (file_exists(public_path($imagePath))) {
-                    $gambarUrl = asset($imagePath);
-                } else {
-                    // Fallback to existing image or placeholder
-                    $gambarUrl = $item->gambar ?? asset('img/placeholder.jpg');
-                }
-
                 return [
                     'id' => $item->id,
                     'nama' => $item->nama,
                     'harga' => $item->harga,
-                    'gambar' => $gambarUrl,
+                    'gambar' => $item->image_url, // Logic di Model handle public/Barang vs storage
                 ];
             });
 
-        // Ambil semua peralatan dari database (Main Catalog)
-        $query = DB::table('barang')
-            ->select(
-                'barang.id',
-                'barang.nama_barang as nama',
-                'barang.harga_per_hari as harga',
-                'barang.stok',
-                'barang.kondisi'
-            )
-            ->where('barang.stok', '>', 0);
+        // Ambil semua peralatan (Eloquent)
+        $query = \App\Models\Barang::where('stok', '>', 0);
 
         if (request('search')) {
-            $query->where('barang.nama_barang', 'like', '%' . request('search') . '%');
+            $query->search(request('search')); // Menggunakan scopeSearch di Model
         }
 
-        $peralatan = $query->orderBy('barang.id')
+        $peralatan = $query->orderBy('id')
             ->get()
             ->map(function ($item, $index) {
                 return [

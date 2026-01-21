@@ -178,6 +178,11 @@ class Barang extends Model
     public function getImageUrlAttribute()
     {
         if ($this->image) {
+            // Cek apakah file ada di public/Barang (Legacy/Manual upload)
+            if (file_exists(public_path('Barang/' . $this->image))) {
+                return asset('Barang/' . $this->image);
+            }
+            // Default ke storage
             return asset('storage/barang/' . $this->image);
         }
         return asset('img/no-image.jpg');
