@@ -18,7 +18,7 @@
     <nav class="navbar">
         <div class="container">
             <a href="{{ url('/') }}" class="nav-brand">
-                <span style="color: var(--primary-color)">EX</span>plorent
+                <span style="color: var(--primary-color)">EXplorent</span>
             </a>
 
             <button class="mobile-toggle" aria-label="Toggle navigation">
