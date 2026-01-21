@@ -61,6 +61,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Gambar</th>
                             <th>Nama</th>
                             <th>Harga</th>
                             <th>Stok</th>
@@ -72,6 +73,10 @@
                         @foreach($peralatan as $item)
                             <tr>
                                 <td>{{ $item['no'] }}</td>
+                                <td>
+                                    <img src="{{ $item['gambar'] }}" alt="{{ $item['nama'] }}"
+                                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                </td>
                                 <td style="font-weight: 500;">{{ $item['nama'] }}</td>
                                 <td style="color: var(--primary-color); font-weight: 600;">
                                     Rp {{ number_format($item['harga'], 0, ',', '.') }}

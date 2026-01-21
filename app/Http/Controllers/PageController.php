@@ -38,7 +38,8 @@ class PageController extends Controller
                     'nama' => $item->nama,
                     'harga' => $item->harga,
                     'stok' => $item->stok,
-                    'kondisi' => $item->kondisi
+                    'kondisi' => $item->kondisi,
+                    'gambar' => $item->image_url
                 ];
             });
 
