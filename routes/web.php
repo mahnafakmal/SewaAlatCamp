@@ -14,9 +14,7 @@ use App\Http\Controllers\OrderController;
 */
 
 // --- PUBLIC ROUTES ---
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PageController::class, 'beranda']);
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -32,13 +30,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/cara-sewa', [PageController::class, 'caraSewa'])->name('cara-sewa');
 Route::get('/peraturan-sewa', [PageController::class, 'peraturan'])->name('peraturan');
 Route::get('/info', [PageController::class, 'info'])->name('info');
+Route::get('/beranda', [PageController::class, 'beranda'])->name('beranda');
 
 
 // --- AUTHENTICATED ROUTES ---
 Route::middleware(['auth'])->group(function () {
 
-    // BERANDA (CATALOG)
-    Route::get('/beranda', [PageController::class, 'beranda'])->name('beranda');
+    // BERANDA (CATALOG) - Moved to Public
+    // Route::get('/beranda', [PageController::class, 'beranda'])->name('beranda');
 
     // CART
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
