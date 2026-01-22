@@ -22,10 +22,16 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
-            return redirect()->route('beranda');
+
+            // Cek Role untuk Redirection Terpisah
+            if (auth()->user()->role === 'admin') {
+                return redirect()->route('edit-stok.index')->with('success', 'Selamat datang kembali, Admin!');
+            }
+
+            return redirect()->route('beranda')->with('success', 'Login berhasil!');
         }
 
-        return back()->with('error', 'Login gagal');
+        return back()->with('error', 'Email atau password salah.');
     }
 
     public function showRegister()

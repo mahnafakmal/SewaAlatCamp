@@ -40,7 +40,10 @@
                 {{-- Move Actions to Menu on Mobile --}}
                 <div class="mobile-actions">
                     @auth
-                        <a href="{{ route('orders.index') }}" class="nav-link">Riwayat</a>
+                            @if(auth()->user()->role === 'admin')
+                                <a href="{{ route('edit-stok.index') }}" class="nav-link" style="color: var(--primary-color);">Admin Panel</a>
+                            @endif
+                            <a href="{{ route('orders.index') }}" class="nav-link">Riwayat</a>
                         <a href="{{ route('cart.index') }}" class="nav-link">Keranjang @if(session('cart'))
                         ({{ count(session('cart')) }}) @endif</a>
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
@@ -58,6 +61,14 @@
             <div class="nav-actions desktop-only">
                 @auth
                     <a href="{{ route('orders.index') }}" class="nav-link">Riwayat</a>
+
+                    @if(auth()->user()->role === 'admin')
+                        <a href="{{ route('edit-stok.index') }}" class="nav-link"
+                            style="color: var(--primary-color); font-weight: bold;">
+                            Admin Panel
+                        </a>
+                    @endif
+
                     <a href="{{ route('cart.index') }}" class="btn btn-secondary" style="padding: 0.4rem 0.8rem;">
                         Keranjang
                         @if(session('cart'))

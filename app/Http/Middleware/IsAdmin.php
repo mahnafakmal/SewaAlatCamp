@@ -19,6 +19,6 @@ class IsAdmin
             return $next($request);
         }
 
-        return redirect('/')->with('error', 'Anda tidak memiliki akses sebagai Admin.');
+        return redirect()->route('beranda')->with('error', 'Akses ditolak. Halaman khusus Admin.');
     }
 }
