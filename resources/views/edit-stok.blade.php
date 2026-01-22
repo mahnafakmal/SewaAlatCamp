@@ -108,7 +108,7 @@
                             <td>{{ $barang->firstItem() + $index }}</td>
                             <td>
                                 @if($item->image)
-                                    <img src="{{ asset('storage/barang/' . $item->image) }}" alt="{{ $item->nama }}"
+                                    <img src="{{ $item->image_url }}" alt="{{ $item->nama }}"
                                         style="width: 4rem; height: 4rem; object-fit: cover; border-radius: 0.25rem;">
                                 @else
                                     <div

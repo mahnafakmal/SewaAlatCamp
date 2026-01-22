@@ -67,9 +67,15 @@
                                 <h5>Detail Barang:</h5>
                                 <ul style="list-style: none; padding-left: 0;">
                                     @foreach($order->items as $item)
-                                        <li style="display: flex; justify-content: space-between; max-width: 400px; padding: 5px 0; border-bottom: 1px dashed #ccc;">
-                                            <span>{{ $item->barang->nama }} (x{{ $item->quantity }})</span>
-                                            <span>Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</span>
+                                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ccc;">
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <img src="{{ $item->barang->image_url }}" alt="{{ $item->barang->nama }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                                <div>
+                                                    <div style="font-weight: 500;">{{ $item->barang->nama }}</div>
+                                                    <small class="text-muted">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</small>
+                                                </div>
+                                            </div>
+                                            <span style="font-weight: 600;">Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</span>
                                         </li>
                                     @endforeach
                                 </ul>
