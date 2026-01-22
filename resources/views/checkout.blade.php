@@ -8,7 +8,7 @@
             {{-- FORM CHECKOUT --}}
             <div>
                 <div class="card p-4">
-                    <form action="{{ route('order.store') }}" method="POST">
+                    <form action="{{ route('order.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <h3 class="mb-4">Informasi Penyewa</h3>
@@ -32,14 +32,34 @@
 
                         <div class="mb-4">
                             <label class="block mb-2">Metode Pembayaran</label>
-                            <select name="payment_method" class="form-control">
+                            <select name="payment_method" id="payment_method" class="form-control" onchange="toggleProof()">
                                 <option value="transfer">Transfer Bank (BCA - 12345678)</option>
                                 <option value="cod">Bayar di Tempat (COD)</option>
                             </select>
                         </div>
 
+                        <div class="mb-4" id="proof_container">
+                            <label class="block mb-2">Bukti Transfer (Screenshot)</label>
+                            <input type="file" name="payment_proof" class="form-control" accept="image/*">
+                            <small class="text-muted">Silakan upload bukti transfer jika memilih metode Transfer Bank.</small>
+                        </div>
+
                         <button type="submit" class="btn btn-primary btn-block">Buat Pesanan</button>
                     </form>
+
+                    <script>
+                        function toggleProof() {
+                            var method = document.getElementById('payment_method').value;
+                            var container = document.getElementById('proof_container');
+                            if (method === 'transfer') {
+                                container.style.display = 'block';
+                            } else {
+                                container.style.display = 'none';
+                            }
+                        }
+                        // Init
+                        toggleProof();
+                    </script>
                 </div>
             </div>
 

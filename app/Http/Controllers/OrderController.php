@@ -26,6 +26,7 @@ class OrderController extends Controller
         $request->validate([
             'phone' => 'required',
             'address' => 'required',
+            'payment_proof' => 'nullable|image|max:2048',
         ]);
 
         // Update user data if needed (optional)
@@ -51,16 +52,23 @@ class OrderController extends Controller
 
         DB::beginTransaction();
         try {
+            // Handle Payment Proof Upload
+            $proofPath = null;
+            if ($request->hasFile('payment_proof')) {
+                $proofPath = $request->file('payment_proof')->store('payment_proofs', 'public');
+            }
+
             $order = Order::create([
                 'user_id' => $user->id,
                 'total_price' => $total,
-                'status' => 'pending', // or 'processing'
+                'status' => 'pending', 
+                'payment_proof' => $proofPath,
             ]);
 
             foreach ($cart as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
-                    'barang_id' => $item['id'], // Assuming ID in cart matches barang ID
+                    'barang_id' => $item['id'], 
                     'quantity' => $item['qty'],
                     'price' => $item['harga'],
                 ]);

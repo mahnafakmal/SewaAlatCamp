@@ -83,6 +83,18 @@
                                     <strong>Alamat Pengiriman:</strong><br>
                                     {{ $order->user->address ?? 'Tidak ada alamat' }}
                                 </div>
+                                
+                                <div style="margin-top: 10px;">
+                                    <strong>Bukti Pembayaran:</strong><br>
+                                    @if($order->payment_proof)
+                                        <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank" style="display: inline-block;">
+                                            <img src="{{ asset('storage/' . $order->payment_proof) }}" alt="Bukti Transfer" style="max-width: 150px; max-height: 150px; object-fit: cover; border: 1px solid #dee2e6; border-radius: 4px; padding: 4px; margin-top: 5px;">
+                                        </a>
+                                        <div style="font-size: 0.8rem; color: #6c757d; margin-top: 2px;">Klik gambar untuk memperbesar</div>
+                                    @else
+                                        <span class="text-muted" style="font-style: italic;">Tidak ada bukti pembayaran (COD / Belum upload)</span>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty
