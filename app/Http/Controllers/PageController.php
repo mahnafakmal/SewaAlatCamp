@@ -23,13 +23,15 @@ class PageController extends Controller
             });
 
         // Ambil semua peralatan (Eloquent)
-        $query = \App\Models\Barang::where('stok', '>', 0);
+        // Menampilkan semua barang termasuk yang habis stoknya
+        $query = \App\Models\Barang::query();
 
         if (request('search')) {
             $query->search(request('search')); // Menggunakan scopeSearch di Model
         }
 
-        $peralatan = $query->orderBy('id')
+        $peralatan = $query->orderBy('stok', 'desc') // Stok banyak diatas
+            ->orderBy('id')
             ->get()
             ->map(function ($item, $index) {
                 return [
@@ -38,6 +40,8 @@ class PageController extends Controller
                     'nama' => $item->nama,
                     'harga' => $item->harga,
                     'stok' => $item->stok,
+                    'stok_label' => $item->stock_label, // Menggunakan accessor
+                    'stok_status' => $item->stock_status, // Menggunakan accessor
                     'kondisi' => $item->kondisi,
                     'gambar' => $item->image_url
                 ];

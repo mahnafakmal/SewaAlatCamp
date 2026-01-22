@@ -82,22 +82,30 @@
                                     Rp {{ number_format($item['harga'], 0, ',', '.') }}
                                 </td>
                                 <td>
-                                    <span class="badge badge-success">{{ $item['stok'] }} unit</span>
+                                    <span class="badge badge-{{ $item['stok_status'] }}">{{ $item['stok_label'] }}
+                                        ({{ $item['stok'] }})</span>
                                 </td>
                                 <td>
                                     <span class="badge badge-warning">{{ $item['kondisi'] }}</span>
                                 </td>
                                 <td>
-                                    <form action="{{ route('cart.add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{ $item['id'] }}">
-                                        <input type="hidden" name="nama" value="{{ $item['nama'] }}">
-                                        <input type="hidden" name="harga" value="{{ $item['harga'] }}">
+                                    @if($item['stok'] > 0)
+                                        <form action="{{ route('cart.add') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $item['id'] }}">
+                                            <input type="hidden" name="nama" value="{{ $item['nama'] }}">
+                                            <input type="hidden" name="harga" value="{{ $item['harga'] }}">
 
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            + Keranjang
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                + Keranjang
+                                            </button>
+                                        </form>
+                                    @else
+                                        <button class="btn btn-secondary btn-sm" disabled
+                                            style="opacity: 0.6; cursor: not-allowed;">
+                                            Habis
                                         </button>
-                                    </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

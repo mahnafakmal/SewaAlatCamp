@@ -320,9 +320,13 @@ class Barang extends Model
     public function scopeSearch($query, $keyword)
     {
         return $query->where(function ($q) use ($keyword) {
-            $q->where('nama', 'LIKE', "%{$keyword}%")
-                ->orWhere('kategori', 'LIKE', "%{$keyword}%")
-                ->orWhere('keterangan', 'LIKE', "%{$keyword}%");
+            $q->where('nama_barang', 'LIKE', "%{$keyword}%")
+                ->orWhere('deskripsi', 'LIKE', "%{$keyword}%")
+                ->orWhereIn('kategori_id', function ($sub) use ($keyword) {
+                    $sub->select('id')
+                        ->from('kategori')
+                        ->where('nama_kategori', 'LIKE', "%{$keyword}%");
+                });
         });
     }
 

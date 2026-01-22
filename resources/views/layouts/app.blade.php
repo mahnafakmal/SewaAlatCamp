@@ -18,6 +18,7 @@
     <nav class="navbar">
         <div class="container">
             <a href="{{ url('/') }}" class="nav-brand">
+                <img src="{{ asset('img/logo.png') }}" alt="Logo">
                 <span style="color: var(--primary-color)">EXplorent</span>
             </a>
 
@@ -112,7 +113,7 @@
                 </div>
             </div>
             <div class="copyright">
-                &copy; {{ date('Y') }} EXplorent Outdoor. All rights reserved.
+                &copy; {{ date('Y') }} EXplorent Outdoor. Kelompok 6.
             </div>
         </div>
     </footer>
