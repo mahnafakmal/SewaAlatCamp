@@ -85,4 +85,32 @@ class OrderController extends Controller
         $orders = Order::where('user_id', Auth::id())->with('items.barang')->latest()->get();
         return view('orders.index', compact('orders'));
     }
+
+    // --- ADMIN METHODS ---
+    public function adminIndex()
+    {
+        $orders = Order::with(['user', 'items.barang'])->latest()->get();
+        return view('orders.admin_index', compact('orders'));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        
+        $request->validate([
+            'status' => 'required|in:pending,paid,rented,returned,cancelled'
+        ]);
+
+        $order->status = $request->status;
+        $order->save();
+
+        // Jika status cancelled, kembalikan stok
+        if ($request->status == 'cancelled') {
+            foreach ($order->items as $item) {
+                DB::table('barang')->where('id', $item->barang_id)->increment('stok', $item->quantity);
+            }
+        }
+
+        return back()->with('success', 'Status pesanan berhasil diperbarui.');
+    }
 }

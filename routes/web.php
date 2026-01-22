@@ -53,5 +53,9 @@ Route::middleware(['auth'])->group(function () {
     // ADMIN ROUTES
     Route::middleware(['admin'])->group(function () {
         Route::resource('edit-stok', StokController::class, ['names' => 'edit-stok']);
+        
+        // Pesanan Masuk (Admin)
+        Route::get('/admin/orders', [OrderController::class, 'adminIndex'])->name('admin.orders');
+        Route::post('/admin/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.status');
     });
 });

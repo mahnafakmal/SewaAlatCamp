@@ -41,7 +41,8 @@
                 <div class="mobile-actions">
                     @auth
                             @if(auth()->user()->role === 'admin')
-                                <a href="{{ route('edit-stok.index') }}" class="nav-link" style="color: var(--primary-color);">Admin Panel</a>
+                                <a href="{{ route('edit-stok.index') }}" class="nav-link" style="color: var(--primary-color);">Stok Barang</a>
+                                <a href="{{ route('admin.orders') }}" class="nav-link" style="color: var(--primary-color);">Pesanan Masuk</a>
                             @endif
                             <a href="{{ route('orders.index') }}" class="nav-link">Riwayat</a>
                         <a href="{{ route('cart.index') }}" class="nav-link">Keranjang @if(session('cart'))
@@ -65,7 +66,11 @@
                     @if(auth()->user()->role === 'admin')
                         <a href="{{ route('edit-stok.index') }}" class="nav-link"
                             style="color: var(--primary-color); font-weight: bold;">
-                            Admin Panel
+                            Stok
+                        </a>
+                        <a href="{{ route('admin.orders') }}" class="nav-link"
+                            style="color: var(--primary-color); font-weight: bold;">
+                            Pesanan
                         </a>
                     @endif
 
