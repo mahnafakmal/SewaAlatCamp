@@ -6,8 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'EXplorent') }} - Sewa Alat Outdoor</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <!-- CSS - Opsi 1: Jika pakai Vite (Laravel 9+) -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- CSS - Opsi 2: Jika CSS langsung di public folder (gunakan salah satu) -->
+    <!-- <link rel="stylesheet" href="/css/style.css"> -->
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
