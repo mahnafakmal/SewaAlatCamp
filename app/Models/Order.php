@@ -17,6 +17,7 @@ class Order extends Model
         'snap_token',
         'rental_date',
         'pickup_time',
+        'duration',
     ];
 
     public function user()

@@ -85,13 +85,17 @@
                                 </div>
 
                                 <div class="row mt-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <strong>Rencana Sewa:</strong><br>
                                         {{ $order->rental_date ? \Carbon\Carbon::parse($order->rental_date)->format('d F Y') : '-' }}
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <strong>Waktu Pengambilan:</strong><br>
                                         {{ $order->pickup_time ? \Carbon\Carbon::parse($order->pickup_time)->format('H:i') . ' WIB' : '-' }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Durasi Sewa:</strong><br>
+                                        {{ $order->duration }} Hari
                                     </div>
                                 </div>
                                 

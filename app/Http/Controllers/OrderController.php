@@ -28,6 +28,7 @@ class OrderController extends Controller
             'address' => 'required',
             'rental_date' => 'required|date|after_or_equal:today',
             'pickup_time' => 'required',
+            'duration' => 'required|integer|min:1',
             'payment_proof' => 'nullable|image|max:2048',
         ]);
 
@@ -52,6 +53,9 @@ class OrderController extends Controller
             }
         }
 
+        $duration = $request->input('duration', 1);
+        $total = $total * $duration;
+
         DB::beginTransaction();
         try {
             // Handle Payment Proof Upload
@@ -67,6 +71,7 @@ class OrderController extends Controller
                 'payment_proof' => $proofPath,
                 'rental_date' => $request->rental_date,
                 'pickup_time' => $request->pickup_time,
+                'duration' => $duration,
             ]);
 
             foreach ($cart as $item) {

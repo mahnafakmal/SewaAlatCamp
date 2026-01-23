@@ -41,6 +41,11 @@
                         </div>
 
                         <div class="mb-4">
+                            <label class="block mb-2">Berapa hari?</label>
+                            <input type="number" name="duration" id="duration" class="form-control" min="1" value="1" required onchange="updateTotal()" onkeyup="updateTotal()">
+                        </div>
+
+                        <div class="mb-4">
                             <label class="block mb-2">Metode Pembayaran</label>
                             <select name="payment_method" id="payment_method" class="form-control" onchange="toggleProof()">
                                 <option value="transfer">Transfer Bank (BCA - 12345678)</option>
@@ -58,6 +63,19 @@
                     </form>
 
                     <script>
+                        @php
+                            $baseTotal = array_reduce($cart, function ($carry, $item) {
+                                return $carry + ($item['harga'] * $item['qty']); 
+                            }, 0);
+                        @endphp
+                        const baseTotal = {{ $baseTotal }};
+
+                        function updateTotal() {
+                            const duration = parseInt(document.getElementById('duration').value) || 1;
+                            const total = baseTotal * duration;
+                            document.getElementById('total_display').innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
+                        }
+
                         function toggleProof() {
                             var method = document.getElementById('payment_method').value;
                             var container = document.getElementById('proof_container');
@@ -89,7 +107,7 @@
                         <tr style="border-top: 1px solid #eee;">
                             <td style="padding-top: 10px; font-weight: bold;">Total</td>
                             <td
-                                style="padding-top: 10px; text-align: right; font-weight: bold; color: var(--primary-color);">
+                                style="padding-top: 10px; text-align: right; font-weight: bold; color: var(--primary-color);" id="total_display">
                                 Rp
                                 {{ number_format(array_reduce($cart, function ($carry, $item) {
         return $carry + ($item['harga'] * $item['qty']); }, 0), 0, ',', '.') }}
