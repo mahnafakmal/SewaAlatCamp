@@ -170,8 +170,30 @@
         </div>
 
         <!-- Pagination -->
-        <div class="mt-4">
+        <div class="mt-4 d-flex justify-content-end custom-pagination">
             {{ $barang->links() }}
         </div>
     </div>
+
+<style>
+    /* Pagination Sizing Override */
+    .custom-pagination nav[role="navigation"] div, 
+    .custom-pagination .pagination {
+        font-size: 0.85rem !important;
+    }
+    .custom-pagination nav[role="navigation"] a, 
+    .custom-pagination nav[role="navigation"] span {
+        padding: 0.25rem 0.6rem !important;
+        font-size: 0.85rem !important;
+        line-height: 1.5 !important;
+    }
+    .custom-pagination svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+    .custom-pagination .page-item .page-link {
+        padding: 0.25rem 0.5rem !important;
+        font-size: 0.85rem !important;
+    }
+</style>
 @endsection

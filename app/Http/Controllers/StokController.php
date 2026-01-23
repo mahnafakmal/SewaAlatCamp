@@ -91,8 +91,9 @@ class StokController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Barang $barang)
+    public function edit($id)
     {
+        $barang = Barang::findOrFail($id);
         return view('edit-barang', compact('barang'));
     }
 
