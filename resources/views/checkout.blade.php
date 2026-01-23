@@ -31,6 +31,16 @@
                         </div>
 
                         <div class="mb-4">
+                            <label class="block mb-2">Mau disewa hari apa?</label>
+                            <input type="date" name="rental_date" class="form-control" required min="{{ date('Y-m-d') }}">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block mb-2">Diambil jam berapa?</label>
+                            <input type="time" name="pickup_time" class="form-control" required>
+                        </div>
+
+                        <div class="mb-4">
                             <label class="block mb-2">Metode Pembayaran</label>
                             <select name="payment_method" id="payment_method" class="form-control" onchange="toggleProof()">
                                 <option value="transfer">Transfer Bank (BCA - 12345678)</option>

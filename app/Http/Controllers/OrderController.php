@@ -26,6 +26,8 @@ class OrderController extends Controller
         $request->validate([
             'phone' => 'required',
             'address' => 'required',
+            'rental_date' => 'required|date|after_or_equal:today',
+            'pickup_time' => 'required',
             'payment_proof' => 'nullable|image|max:2048',
         ]);
 
@@ -63,6 +65,8 @@ class OrderController extends Controller
                 'total_price' => $total,
                 'status' => 'pending', 
                 'payment_proof' => $proofPath,
+                'rental_date' => $request->rental_date,
+                'pickup_time' => $request->pickup_time,
             ]);
 
             foreach ($cart as $item) {

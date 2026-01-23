@@ -80,8 +80,19 @@
                                     @endforeach
                                 </ul>
                                 <div style="margin-top: 10px;">
-                                    <strong>Alamat Pengiriman:</strong><br>
+                                    <strong>Alamat Penyewa:</strong><br>
                                     {{ $order->user->address ?? 'Tidak ada alamat' }}
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <strong>Rencana Sewa:</strong><br>
+                                        {{ $order->rental_date ? \Carbon\Carbon::parse($order->rental_date)->format('d F Y') : '-' }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Waktu Pengambilan:</strong><br>
+                                        {{ $order->pickup_time ? \Carbon\Carbon::parse($order->pickup_time)->format('H:i') . ' WIB' : '-' }}
+                                    </div>
                                 </div>
                                 
                                 <div style="margin-top: 10px;">

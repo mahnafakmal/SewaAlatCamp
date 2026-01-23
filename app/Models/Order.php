@@ -15,6 +15,8 @@ class Order extends Model
         'status',
         'payment_proof',
         'snap_token',
+        'rental_date',
+        'pickup_time',
     ];
 
     public function user()
