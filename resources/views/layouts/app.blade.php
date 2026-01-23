@@ -8,8 +8,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
-    <!-- Icons if needed (e.g. phosphors or fontawesome) - for now using text -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -45,12 +44,16 @@
                                 <a href="{{ route('admin.orders') }}" class="nav-link" style="color: var(--primary-color);">Pesanan Masuk</a>
                             @endif
                             <a href="{{ route('orders.index') }}" class="nav-link">Riwayat</a>
-                        <a href="{{ route('cart.index') }}" class="nav-link">Keranjang @if(session('cart'))
-                        ({{ count(session('cart')) }}) @endif</a>
+                        <a href="{{ route('cart.index') }}" class="nav-link">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            @if(session('cart')) ({{ count(session('cart')) }}) @endif
+                        </a>
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
                             <button type="submit" class="nav-link"
-                                style="background:none; border:none; padding:0; cursor:pointer;">Logout</button>
+                                style="background:none; border:none; padding:0; cursor:pointer;" title="Logout">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </button>
                         </form>
                     @else
                         <a href="{{ route('login') }}" class="nav-link">Masuk</a>
@@ -74,15 +77,17 @@
                         </a>
                     @endif
 
-                    <a href="{{ route('cart.index') }}" class="btn btn-secondary" style="padding: 0.4rem 0.8rem;">
-                        Keranjang
+                    <a href="{{ route('cart.index') }}" class="btn btn-secondary" style="padding: 0.5rem 0.8rem; position: relative; min-width: 45px; text-align: center;">
+                        <i class="fa-solid fa-cart-shopping"></i>
                         @if(session('cart'))
-                            <span class="badge badge-success" style="margin-left:5px">{{ count(session('cart')) }}</span>
+                            <span class="badge badge-success" style="position: absolute; top: -5px; right: -5px; border-radius: 50%; padding: 2px 6px; font-size: 10px;">{{ count(session('cart')) }}</span>
                         @endif
                     </a>
                     <form action="{{ route('logout') }}" method="POST" class="d-inline">
                         @csrf
-                        <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Logout</button>
+                        <button type="submit" class="btn btn-primary" style="margin-left: 10px;" title="Logout">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
                     </form>
                 @else
                     <a href="{{ route('login') }}" class="nav-link">Masuk</a>

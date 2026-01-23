@@ -69,11 +69,21 @@
                                     @foreach($order->items as $item)
                                         <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ccc;">
                                             <div style="display: flex; align-items: center; gap: 10px;">
-                                                <img src="{{ $item->barang->image_url }}" alt="{{ $item->barang->nama }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
-                                                <div>
-                                                    <div style="font-weight: 500;">{{ $item->barang->nama }}</div>
-                                                    <small class="text-muted">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</small>
-                                                </div>
+                                                @if($item->barang)
+                                                    <img src="{{ $item->barang->image_url }}" alt="{{ $item->barang->nama }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                                    <div>
+                                                        <div style="font-weight: 500;">{{ $item->barang->nama }}</div>
+                                                        <small class="text-muted">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</small>
+                                                    </div>
+                                                @else
+                                                    <div style="width: 40px; height: 40px; background-color: #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fa fa-ban text-muted"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div style="font-weight: 500; font-style: italic; color: #999;">Item telah dihapus</div>
+                                                        <small class="text-muted">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</small>
+                                                    </div>
+                                                @endif
                                             </div>
                                             <span style="font-weight: 600;">Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</span>
                                         </li>

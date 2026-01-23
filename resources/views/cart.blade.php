@@ -18,6 +18,7 @@
                             <th>Harga</th>
                             <th>Qty</th>
                             <th>Subtotal</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,19 +29,39 @@
                             <tr>
                                 <td>{{ $item['nama'] }}</td>
                                 <td>Rp {{ number_format($item['harga'], 0, ',', '.') }}</td>
-                                <td>{{ $item['qty'] }}</td>
+                                <td style="width: 100px;">
+                                    <form action="{{ route('cart.update') }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="id" value="{{ $item['id'] }}">
+                                        <input type="number" name="qty" value="{{ $item['qty'] }}" min="1" class="form-control text-center" onchange="this.form.submit()">
+                                    </form>
+                                </td>
                                 <td>Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
+                                <td>
+                                    <form action="{{ route('cart.remove') }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="id" value="{{ $item['id'] }}">
+                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                         <tr style="background-color: #f9fafb; font-weight: bold;">
-                            <td colspan="3" style="text-align: right;">Total</td>
+                            <td colspan="4" style="text-align: right;">Total</td>
                             <td>Rp {{ number_format($total, 0, ',', '.') }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div style="text-align: right;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <form action="{{ route('cart.clear') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mengosongkan keranjang?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-outline">Kosongkan Keranjang</button>
+                </form>
                 <a href="{{ route('checkout') }}" class="btn btn-primary">Lanjut ke Pembayaran</a>
             </div>
         @endif

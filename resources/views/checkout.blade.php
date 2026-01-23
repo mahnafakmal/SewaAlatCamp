@@ -99,8 +99,20 @@
                     <table class="w-100 mb-4" style="width: 100%; font-size: 0.9rem;">
                         @foreach($cart as $item)
                             <tr>
-                                <td style="padding: 5px 0;">{{ $item['nama'] }} x {{ $item['qty'] }}</td>
-                                <td style="text-align: right;">Rp
+                                <td style="padding: 5px 0;">
+                                    {{ $item['nama'] }} <br>
+                                    <div style="display: flex; gap: 5px; margin-top: 5px; align-items: center;">
+                                        <form action="{{ route('cart.update') }}" method="POST" style="display: flex; align-items: center;">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="id" value="{{ $item['id'] }}">
+                                            <input type="number" name="qty" value="{{ $item['qty'] }}" min="1" 
+                                                style="width: 50px; padding: 2px; font-size: 0.8rem;" onchange="this.form.submit()">
+                                        </form>
+                                        <small class="text-muted">x Rp {{ number_format($item['harga'], 0, ',', '.') }}</small>
+                                    </div>
+                                </td>
+                                <td style="text-align: right; vertical-align: top;">Rp
                                     {{ number_format($item['harga'] * $item['qty'], 0, ',', '.') }}</td>
                             </tr>
                         @endforeach
