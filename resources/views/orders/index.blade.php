@@ -22,9 +22,13 @@
                             </div>
                             <div>
                                 @if($order->status == 'pending')
-                                    <span class="badge badge-warning">Menunggu Pembayaran</span>
+                                    <span class="badge badge-warning">Menunggu Konfirmasi</span>
                                 @elseif($order->status == 'paid')
-                                    <span class="badge badge-success">Dibayar</span>
+                                    <span class="badge badge-info text-white">Sudah Dibayar (Menunggu Barang)</span>
+                                @elseif($order->status == 'rented')
+                                    <span class="badge badge-primary">Sedang Disewa (Dibawa)</span>
+                                @elseif($order->status == 'returned')
+                                    <span class="badge badge-success">Dikembalikan (Selesai)</span>
                                 @elseif($order->status == 'completed')
                                     <span class="badge badge-success">Selesai</span>
                                 @elseif($order->status == 'cancelled')
