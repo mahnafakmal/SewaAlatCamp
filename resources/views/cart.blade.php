@@ -56,7 +56,28 @@
                 </table>
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <style>
+                .cart-actions {
+                    display: flex; 
+                    justify-content: space-between; 
+                    align-items: center;
+                }
+                @media (max-width: 600px) {
+                    .cart-actions {
+                        flex-direction: column;
+                        gap: 1rem;
+                    }
+                    .cart-actions form, .cart-actions a {
+                        width: 100%;
+                    }
+                    .cart-actions .btn {
+                        width: 100%;
+                        display: block;
+                        text-align: center;
+                    }
+                }
+            </style>
+            <div class="cart-actions">
                 <form action="{{ route('cart.clear') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mengosongkan keranjang?');">
                     @csrf
                     @method('DELETE')

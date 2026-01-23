@@ -10,8 +10,23 @@
                 Menyediakan alat camping, hiking, dan outdoor travelling
                 lengkap dengan harga terjangkau.
             </p>
-            <form action="{{ route('beranda') }}" method="GET"
-                style="max-width: 500px; margin: 0 auto; display: flex; gap: 10px;">
+            <style>
+                .hero-search {
+                    max-width: 500px;
+                    margin: 0 auto;
+                    display: flex;
+                    gap: 10px;
+                }
+                @media(max-width: 480px) {
+                    .hero-search {
+                        flex-direction: column;
+                    }
+                    .hero-search button {
+                        width: 100%;
+                    }
+                }
+            </style>
+            <form action="{{ route('beranda') }}" method="GET" class="hero-search">
                 <input type="text" name="search" class="form-control" placeholder="Cari perlengkapan..."
                     value="{{ request('search') }}">
                 <button type="submit" class="btn btn-primary" style="white-space: nowrap;">Cari</button>

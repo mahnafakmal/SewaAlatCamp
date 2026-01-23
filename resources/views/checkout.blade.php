@@ -1,10 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+    <style>
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
     <div class="container py-5">
         <h2 class="mb-4">Checkout</h2>
 
-        <div class="grid" style="grid-template-columns: 2fr 1fr;">
+        <div class="checkout-grid">
             {{-- FORM CHECKOUT --}}
             <div>
                 <div class="card p-4">
