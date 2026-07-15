@@ -14,6 +14,7 @@
 
             <form action="{{ route('beranda') }}" method="GET" class="max-w-xl mx-auto flex gap-3 bg-white p-2 rounded-2xl shadow-xl">
                 <input type="text" name="search" class="flex-grow px-4 py-3 bg-transparent text-slate-800 outline-none placeholder:text-slate-400" placeholder="Cari perlengkapan (e.g. Tenda)..."
+
                     value="{{ request('search') }}">
                 <button type="submit" class="btn btn-primary bg-green-600 hover:bg-green-700 px-8 py-3 rounded-xl font-bold">Cari</button>
             </form>
