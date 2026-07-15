@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="page-header">
+    <div class="page-header text-center">
         <div class="container">
-            <h1>Tambah Barang Baru</h1>
-            <p>Masukkan informasi peralatan camping baru ke dalam sistem.</p>
+            <h1 class="text-white text-3xl mb-4">Tambah Barang Baru</h1>
+            <p class="text-green-200 text-base max-w-xl mx-auto">Masukkan informasi peralatan camping baru ke dalam sistem.</p>
         </div>
     </div>
 
-    <div class="container pb-5">
-        <div class="card p-5 shadow-lg" style="max-width: 900px; margin: 0 auto; border: none;">
-            
+    <div class="container py-16 pb-24">
+        <div class="card p-8 sm:p-10 shadow-lg border border-slate-100 bg-white rounded-3xl max-w-4xl mx-auto">
+
             @if($errors->any())
-                <div class="alert alert-danger mb-4" style="background-color: #fef2f2; color: #991b1b; padding: 1rem; border-radius: 0.5rem; border: 1px solid #fecaca;">
-                    <ul class="mb-0 pl-4">
+                <div class="alert alert-danger mb-6">
+                    <ul class="mb-0 pl-4 list-disc text-sm">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -21,19 +21,20 @@
                 </div>
             @endif
 
-            <form action="{{ route('edit-stok.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('edit-stok.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
-                <div class="grid mb-4" style="grid-template-columns: 2fr 1fr; gap: 2rem;">
-                    <div>
-                        <div class="form-group mb-4">
-                            <label class="block mb-2 font-weight-bold">Nama Barang</label>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {{-- Left Column: Form Fields --}}
+                    <div class="md:col-span-2 space-y-5">
+                        <div>
+                            <label class="block mb-2 text-sm font-semibold text-slate-700">Nama Barang</label>
                             <input type="text" name="nama" class="form-control" value="{{ old('nama') }}" required placeholder="Contoh: Tenda Dhaulagiri">
                         </div>
 
-                         <div class="grid mb-4" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
-                            <div class="form-group">
-                                <label class="block mb-2 font-weight-bold">Kategori</label>
+                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Kategori</label>
                                 <select name="kategori" class="form-control" required>
                                     <option value="">Pilih Kategori</option>
                                     @foreach(['Tenda', 'Sleeping Bag', 'Carrier', 'Kompor', 'Peralatan Masak', 'Perlengkapan', 'Lainnya'] as $cat)
@@ -42,8 +43,8 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label class="block mb-2 font-weight-bold">Kondisi</label>
+                            <div>
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Kondisi</label>
                                 <select name="kondisi" class="form-control" required>
                                     <option value="Baik" {{ old('kondisi') == 'Baik' ? 'selected' : '' }}>Baik</option>
                                     <option value="Perlu Perawatan" {{ old('kondisi') == 'Perlu Perawatan' ? 'selected' : '' }}>Perlu Perawatan</option>
@@ -51,43 +52,43 @@
                             </div>
                         </div>
 
-                        <div class="grid mb-4" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
-                            <div class="form-group">
-                                <label class="block mb-2 font-weight-bold">Stok</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Stok</label>
                                 <input type="number" name="stok" class="form-control" value="{{ old('stok', 0) }}" min="0" required>
                             </div>
 
-                            <div class="form-group">
-                                <label class="block mb-2 font-weight-bold">Harga Sewa / Hari (Rp)</label>
+                            <div>
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Harga Sewa / Hari (Rp)</label>
                                 <input type="number" name="harga" class="form-control" value="{{ old('harga') }}" min="0" required>
                             </div>
                         </div>
 
-                        <div class="form-group mb-4">
-                            <label class="block mb-2 font-weight-bold">Deskripsi</label>
+                        <div>
+                            <label class="block mb-2 text-sm font-semibold text-slate-700">Deskripsi</label>
                             <textarea name="deskripsi" class="form-control" rows="4" placeholder="Deskripsi detail barang...">{{ old('deskripsi') }}</textarea>
                         </div>
                     </div>
 
-                    {{-- Right Column: Image --}}
+                    {{-- Right Column: Image Preview Placeholder & Upload --}}
                     <div>
-                        <div class="form-group mb-4">
-                            <label class="block mb-2 font-weight-bold">Gambar Barang</label>
-                            
-                            <div class="mb-3 p-4 border rounded text-center bg-light" style="min-height: 200px; display: flex; align-items: center; justify-content: center; color: #9ca3af; flex-direction: column;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mb-2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                                <span>Preview</span>
+                        <div class="space-y-4">
+                            <label class="block text-sm font-semibold text-slate-700">Gambar Barang</label>
+
+                            <div class="p-6 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50 flex flex-col items-center justify-center min-h-[220px] text-slate-400">
+                                <i class="fa-solid fa-cloud-arrow-up text-3xl mb-3"></i>
+                                <span class="text-sm font-medium">Upload Gambar</span>
                             </div>
-                            
-                            <input type="file" name="image" class="form-control" accept="image/*">
-                            <small class="text-muted d-block mt-2">Format: JPG, PNG, JPEG. Max: 2MB.</small>
+
+                            <input type="file" name="image" class="form-control" accept="image/*" required>
+                            <p class="text-xs text-slate-400 leading-normal">Format: JPG, PNG, JPEG. Maksimal 2MB.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="border-top pt-4 text-right" style="display: flex; justify-content: flex-end; gap: 1rem;">
-                    <a href="{{ route('edit-stok.index') }}" class="btn btn-secondary px-4">Batal</a>
-                    <button type="submit" class="btn btn-primary px-4"> Simpan Barang</button>
+                <div class="border-t border-slate-100 pt-6 flex justify-end gap-3">
+                    <a href="{{ route('edit-stok.index') }}" class="btn btn-secondary px-6">Batal</a>
+                    <button type="submit" class="btn btn-primary px-8">Simpan Barang</button>
                 </div>
             </form>
         </div>

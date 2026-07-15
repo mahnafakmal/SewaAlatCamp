@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             KategoriSeeder::class,
             BarangSeeder::class,
+            AdminUserSeeder::class,
         ]);
 
         echo "\n🎉 Semua data berhasil di-seed!\n";

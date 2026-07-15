@@ -1,119 +1,71 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="page-header">
+    <div class="page-header text-center">
         <div class="container">
-            <h1>Tentang Kami</h1>
-            <p>Informasi lokasi, kontak, dan layanan yang kami tawarkan untuk mendukung petualangan Anda.</p>
+            <h1 class="text-white text-4xl mb-4">Tentang Kami</h1>
+            <p class="text-green-200 text-lg max-w-2xl mx-auto">Informasi lokasi, kontak, dan layanan yang kami tawarkan untuk mendukung petualangan Anda.</p>
         </div>
     </div>
 
-    <div class="container">
-        <div class="contact-grid">
+    <div class="container py-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {{-- ALAMAT --}}
-            <div class="contact-card">
-                <div class="contact-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
+            <div class="card p-8 text-center hover:shadow-lg">
+                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mx-auto mb-5">
+                    <i class="fa-solid fa-location-dot text-2xl"></i>
                 </div>
-                <h3>Lokasi Store</h3>
-                <p class="mt-2 text-muted" style="color: var(--text-light);">{{ $alamat }}</p>
-                <a href="#" class="btn btn-secondary btn-sm mt-3">Lihat di Peta</a>
+                <h3 class="text-lg font-bold text-slate-800 mb-3">Lokasi Store</h3>
+                <p class="text-sm text-slate-500 mb-5 leading-relaxed">{{ $alamat }}</p>
+                <a href="#" class="btn btn-secondary btn-sm w-full">
+                    <i class="fa-solid fa-map"></i> Lihat di Peta
+                </a>
             </div>
 
             {{-- KONTAK --}}
-            <div class="contact-card">
-                <div class="contact-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path
-                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
-                        </path>
-                    </svg>
+            <div class="card p-8 text-center hover:shadow-lg">
+                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mx-auto mb-5">
+                    <i class="fa-solid fa-phone text-2xl"></i>
                 </div>
-                <h3>Hubungi Kami</h3>
-                <div class="mt-2">
-                    <p style="margin-bottom: 0.5rem;">WhatsApp: <a href="https://wa.me/6285147111724"
-                            style="color: var(--primary-color); font-weight: 500;">{{ $nohp }}</a></p>
-                    <p>Email: {{ $email }}</p>
+                <h3 class="text-lg font-bold text-slate-800 mb-3">Hubungi Kami</h3>
+                <div class="space-y-2 text-sm">
+                    <p class="text-slate-600"><span class="text-slate-400">WhatsApp:</span> <a href="https://wa.me/6285147111724" class="text-green-600 font-semibold hover:underline">{{ $nohp }}</a></p>
+                    <p class="text-slate-500">{{ $email }}</p>
                 </div>
             </div>
 
             {{-- JAM --}}
-            <div class="contact-card">
-                <div class="contact-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
+            <div class="card p-8 text-center hover:shadow-lg">
+                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 mx-auto mb-5">
+                    <i class="fa-solid fa-clock text-2xl"></i>
                 </div>
-                <h3>Jam Operasional</h3>
-                <p class="mt-2" style="font-size: 1.1rem; font-weight: 600;">{{ $jam_buka }}</p>
-                <p style="font-size: 0.9rem; color: #6b7280;">Buka Setiap Hari</p>
+                <h3 class="text-lg font-bold text-slate-800 mb-3">Jam Operasional</h3>
+                <p class="text-2xl font-bold text-green-600 mb-1">{{ $jam_buka }}</p>
+                <p class="text-sm text-slate-400">Buka Setiap Hari</p>
             </div>
         </div>
 
-        <div class="card p-5 mb-5">
-            <h3 class="mb-4 text-center">Layanan & Fasilitas</h3>
-            <div class="service-list">
-                <div class="service-item">
-                    <div class="service-check">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
+        <div class="card p-10">
+            <h3 class="text-2xl font-bold text-center text-slate-900 mb-8">Layanan & Fasilitas</h3>
+            @php
+                $services = [
+                    ['icon' => 'fa-campground', 'name' => 'Peralatan Camping Terawat'],
+                    ['icon' => 'fa-headset', 'name' => 'Konsultasi Gratis untuk Pemula'],
+                    ['icon' => 'fa-tags', 'name' => 'Paket Sewa Hemat & Grup'],
+                    ['icon' => 'fa-laptop', 'name' => 'Booking Online Mudah'],
+                    ['icon' => 'fa-medal', 'name' => 'Diskon Pelanggan Setia'],
+                    ['icon' => 'fa-truck', 'name' => 'Jasa Antar Jemput (S&K)'],
+                ];
+            @endphp
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach($services as $svc)
+                    <div class="flex items-center gap-4 p-4 rounded-xl border border-slate-100 hover:border-green-300 hover:bg-green-50 transition-all duration-200">
+                        <div class="flex-shrink-0 w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white">
+                            <i class="fa-solid {{ $svc['icon'] }}"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-slate-700">{{ $svc['name'] }}</span>
                     </div>
-                    <span>Peralatan Camping Terawat</span>
-                </div>
-                <div class="service-item">
-                    <div class="service-check">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                    <span>Konsultasi Gratis untuk Pemula</span>
-                </div>
-                <div class="service-item">
-                    <div class="service-check">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                    <span>Paket Sewa Hemat & Grup</span>
-                </div>
-                <div class="service-item">
-                    <div class="service-check">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                    <span>Booking Online Mudah</span>
-                </div>
-                <div class="service-item">
-                    <div class="service-check">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                    <span>Diskon Pelanggan Setia</span>
-                </div>
-                <div class="service-item">
-                    <div class="service-check">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                    <span>Jasa Antar Jemput (S&K)</span>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

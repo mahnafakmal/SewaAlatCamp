@@ -1,57 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Daftar Pesanan Masuk</h2>
+<div class="container py-16">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl font-black text-slate-900">Pesanan Masuk</h1>
+            <p class="text-slate-500 mt-1">Daftar pesanan baru dan riwayat pesanan.</p>
+        </div>
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+        <div class="alert alert-success flex items-center gap-3 mb-6">
+            <i class="fa-solid fa-check-circle text-green-600"></i>
             {{ session('success') }}
         </div>
     @endif
 
-    <div class="card">
-        <div class="table-responsive">
-            <table class="table" style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
-                        <th style="padding: 12px;">ID Pesanan</th>
-                        <th style="padding: 12px;">Tanggal</th>
-                        <th style="padding: 12px;">Pelanggan</th>
-                        <th style="padding: 12px;">Total</th>
-                        <th style="padding: 12px;">Status</th>
-                        <th style="padding: 12px;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($orders as $order)
-                        <tr style="border-bottom: 1px solid #dee2e6;">
-                            <td style="padding: 12px;">#{{ $order->id }}</td>
-                            <td style="padding: 12px;">{{ $order->created_at->format('d M Y H:i') }}</td>
-                            <td style="padding: 12px;">
-                                <strong>{{ $order->user->name }}</strong><br>
-                                <small class="text-muted">{{ $order->user->phone ?? '-' }}</small>
-                            </td>
-                            <td style="padding: 12px;">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
-                            <td style="padding: 12px;">
-                                @php
-                                    $badge = 'secondary';
-                                    if ($order->status == 'pending') $badge = 'warning';
-                                    elseif ($order->status == 'paid') $badge = 'info';
-                                    elseif ($order->status == 'rented') $badge = 'primary';
-                                    elseif ($order->status == 'returned') $badge = 'success';
-                                    elseif ($order->status == 'cancelled') $badge = 'danger';
-                                @endphp
-                                <span class="badge badge-{{ $badge }}" style="padding: 5px 10px; border-radius: 4px; color: white; background-color: var(--{{ $badge }}-color, gray);">
-                                    {{ ucfirst($order->status) }}
-                                </span>
-                            </td>
-                            <td style="padding: 12px;">
-                                <form action="{{ route('admin.orders.status', $order->id) }}" method="POST" style="display:inline-block;">
+    <div class="table-responsive bg-white rounded-3xl p-2 border border-slate-100 shadow-sm">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Pesanan</th>
+                    <th>Tanggal</th>
+                    <th>Pelanggan</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($orders as $order)
+                    <tr class="border-b border-slate-50 last:border-0 hover:bg-slate-50">
+                        <td class="font-semibold text-slate-800">#{{ $order->id }}</td>
+                        <td class="text-slate-500">{{ \Carbon\Carbon::parse($order->created_at)->format('d M Y H:i') }}</td>
+                        <td>
+                            <strong class="text-slate-800">{{ $order->user->name }}</strong><br>
+                            <span class="text-sm text-slate-500">{{ $order->user->phone ?? '-' }}</span>
+                        </td>
+                        <td class="font-bold text-green-600">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                        <td>
+                            @php
+                                $badgeClass = '';
+                                switch ($order->status) {
+                                    case 'pending': $badgeClass = 'badge-warning'; break;
+                                    case 'paid': $badgeClass = 'badge-info'; break;
+                                    case 'rented': $badgeClass = 'badge-primary'; break;
+                                    case 'returned': $badgeClass = 'badge-success'; break;
+                                    case 'cancelled': $badgeClass = 'badge-danger'; break;
+                                    default: $badgeClass = 'badge-secondary'; break;
+                                }
+                            @endphp
+                            <span class="badge {{ $badgeClass }}">{{ ucfirst($order->status) }}</span>
+                        </td>
+                        <td class="text-center">
+                            <div class="flex items-center gap-2 justify-center">
+                                <form action="{{ route('admin.orders.status', $order->id) }}" method="POST">
                                     @csrf
-                                    <select name="status" onchange="this.form.submit()" style="padding: 5px; border-radius: 4px; border: 1px solid #ced4da;">
+                                    <select name="status" onchange="this.form.submit()" class="form-control py-2 text-sm rounded-lg border-slate-300">
                                         <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                         <option value="paid" {{ $order->status == 'paid' ? 'selected' : '' }}>Dibayar</option>
                                         <option value="rented" {{ $order->status == 'rented' ? 'selected' : '' }}>Disewa</option>
@@ -59,106 +64,81 @@
                                         <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Batal</option>
                                     </select>
                                 </form>
-                                <button type="button" class="btn btn-sm btn-info" onclick="toggleDetails({{ $order->id }})" style="margin-left: 5px; font-size: 0.8rem;">Detail</button>
-                            </td>
-                        </tr>
-                        <tr id="details-{{ $order->id }}" style="display: none; background-color: #f8f9fa;">
-                            <td colspan="6" style="padding: 15px;">
-                                <h5>Detail Barang:</h5>
-                                <ul style="list-style: none; padding-left: 0;">
-                                    @foreach($order->items as $item)
-                                        <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ccc;">
-                                            <div style="display: flex; align-items: center; gap: 10px;">
-                                                @if($item->barang)
-                                                    <img src="{{ $item->barang->image_url }}" alt="{{ $item->barang->nama }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
-                                                    <div>
-                                                        <div style="font-weight: 500;">{{ $item->barang->nama }}</div>
-                                                        <small class="text-muted">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</small>
-                                                    </div>
-                                                @else
-                                                    <div style="width: 40px; height: 40px; background-color: #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
-                                                        <i class="fa fa-ban text-muted"></i>
-                                                    </div>
-                                                    <div>
-                                                        <div style="font-weight: 500; font-style: italic; color: #999;">Item telah dihapus</div>
-                                                        <small class="text-muted">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</small>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                            <span style="font-weight: 600;">Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                                <div style="margin-top: 10px;">
-                                    <strong>Alamat Penyewa:</strong><br>
-                                    {{ $order->user->address ?? 'Tidak ada alamat' }}
-                                </div>
+                                <button type="button" class="btn btn-info btn-sm" onclick="toggleDetails({{ $order->id }})">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr id="details-{{ $order->id }}" class="hidden bg-slate-50 border-b border-slate-100">
+                        <td colspan="6" class="p-6">
+                            <h5 class="text-lg font-bold text-slate-800 mb-4">Detail Barang Pesanan:</h5>
+                            <ul class="list-disc pl-5 mb-4 space-y-2">
+                                @foreach($order->items as $item)
+                                    <li class="flex justify-between items-center text-sm text-slate-700">
+                                        <div class="flex items-center gap-3">
+                                            @if($item->barang)
+                                                <img src="{{ $item->barang->image_url }}" alt="{{ $item->barang->nama }}" class="w-10 h-10 object-cover rounded-md border border-slate-200">
+                                                <span>{{ $item->barang->nama }} ({{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }})</span>
+                                            @else
+                                                <div class="w-10 h-10 bg-slate-100 rounded-md flex items-center justify-center text-xl text-slate-400">?</div>
+                                                <span class="italic text-slate-500">Item tidak tersedia ({{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }})</span>
+                                            @endif
+                                        </div>
+                                        <span class="font-bold text-green-600">Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
 
-                                <div class="row mt-3">
-                                    <div class="col-md-4">
-                                        <strong>Rencana Sewa:</strong><br>
-                                        {{ $order->rental_date ? \Carbon\Carbon::parse($order->rental_date)->format('d F Y') : '-' }}
-                                    </div>
-                                    <div class="col-md-4">
-                                        <strong>Waktu Pengambilan:</strong><br>
-                                        {{ $order->pickup_time ? \Carbon\Carbon::parse($order->pickup_time)->format('H:i') . ' WIB' : '-' }}
-                                    </div>
-                                    <div class="col-md-4">
-                                        <strong>Durasi Sewa:</strong><br>
-                                        {{ $order->duration }} Hari
-                                    </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-4">
+                                <div>
+                                    <h6 class="font-bold text-slate-700 mb-2">Informasi Penyewa:</h6>
+                                    <p class="text-slate-600"><strong>Nama:</strong> {{ $order->user->name }}</p>
+                                    <p class="text-slate-600"><strong>Telepon:</strong> {{ $order->user->phone ?? '-' }}</p>
+                                    <p class="text-slate-600"><strong>Alamat:</strong> {{ $order->user->address ?? 'Tidak ada alamat' }}</p>
                                 </div>
-                                
-                                <div style="margin-top: 10px;">
-                                    <strong>Bukti Pembayaran:</strong><br>
-                                    @if($order->payment_proof)
-                                        <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank" style="display: inline-block;">
-                                            <img src="{{ asset('storage/' . $order->payment_proof) }}" alt="Bukti Transfer" style="max-width: 150px; max-height: 150px; object-fit: cover; border: 1px solid #dee2e6; border-radius: 4px; padding: 4px; margin-top: 5px;">
-                                        </a>
-                                        <div style="font-size: 0.8rem; color: #6c757d; margin-top: 2px;">Klik gambar untuk memperbesar</div>
-                                    @else
-                                        <span class="text-muted" style="font-style: italic;">Tidak ada bukti pembayaran (COD / Belum upload)</span>
-                                    @endif
+                                <div>
+                                    <h6 class="font-bold text-slate-700 mb-2">Detail Sewa:</h6>
+                                    <p class="text-slate-600"><strong>Tanggal Sewa:</strong> {{ \Carbon\Carbon::parse($order->rental_date)->format('d F Y') }}</p>
+                                    <p class="text-slate-600"><strong>Waktu Pengambilan:</strong> {{ \Carbon\Carbon::parse($order->pickup_time)->format('H:i') }} WIB</p>
+                                    <p class="text-slate-600"><strong>Durasi:</strong> {{ $order->duration }} Hari</p>
                                 </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center py-4">Belum ada pesanan masuk.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <h6 class="font-bold text-slate-700 mb-2">Bukti Pembayaran:</h6>
+                                @if($order->payment_proof)
+                                    <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank" class="block w-48 h-48 overflow-hidden rounded-lg border border-slate-200 hover:shadow-md transition">
+                                        <img src="{{ asset('storage/' . $order->payment_proof) }}" alt="Bukti Transfer" class="w-full h-full object-cover">
+                                    </a>
+                                    <small class="text-slate-400 mt-2 block">Klik gambar untuk memperbesar</small>
+                                @else
+                                    <span class="text-slate-500 italic text-sm">Tidak ada bukti pembayaran (COD / Belum upload)</span>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center py-12 text-slate-400">
+                            <i class="fa-solid fa-clipboard-list text-3xl mb-3 block opacity-50"></i>
+                            Belum ada pesanan masuk.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
-</div>
 
-<script>
-    function toggleDetails(id) {
-        var el = document.getElementById('details-' + id);
-        if (el.style.display === 'none') {
-            el.style.display = 'table-row';
-        } else {
-            el.style.display = 'none';
+    <script>
+        function toggleDetails(id) {
+            var el = document.getElementById('details-' + id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
         }
-    }
-</script>
-
-<style>
-    /* Status Colors */
-    :root {
-        --warning-color: #ffc107;
-        --info-color: #17a2b8;
-        --primary-color-badge: #007bff;
-        --success-color: #28a745;
-        --danger-color: #dc3545;
-    }
-    .badge-warning { background-color: var(--warning-color); color: #212529 !important; }
-    .badge-info { background-color: var(--info-color); }
-    .badge-primary { background-color: var(--primary-color-badge); }
-    .badge-success { background-color: var(--success-color); }
-    .badge-danger { background-color: var(--danger-color); }
-    
-    .table td { vertical-align: middle; }
-</style>
+    </script>
+</div>
 @endsection

@@ -1,83 +1,77 @@
 @extends('layouts.app')
 
 @section('content')
-    <style>
-        .checkout-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-        }
-        @media (max-width: 768px) {
-            .checkout-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-    <div class="container py-5">
-        <h2 class="mb-4">Checkout</h2>
+    <div class="container py-16 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-black text-slate-900 mb-8 flex items-center gap-3">
+            <i class="fa-solid fa-square-check text-green-600"></i> Checkout Pesanan
+        </h2>
 
-        <div class="checkout-grid">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             {{-- FORM CHECKOUT --}}
-            <div>
-                <div class="card p-4">
+            <div class="lg:col-span-2">
+                <div class="card p-8 bg-white border border-slate-100 shadow-sm">
                     <form action="{{ route('order.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        <h3 class="mb-4">Informasi Penyewa</h3>
+                        <h3 class="text-xl font-bold text-slate-800 mb-6 pb-3 border-b border-slate-100">Informasi Penyewa</h3>
 
-                        <div class="mb-4">
-                            <label class="block mb-2">Nama Lengkap</label>
-                            <input type="text" name="name" class="form-control" value="{{ auth()->user()->name }}" required>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Nama Lengkap</label>
+                                <input type="text" name="name" class="form-control" value="{{ auth()->user()->name }}" required>
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Nomor Telepon / WA</label>
+                                <input type="text" name="phone" class="form-control" value="{{ auth()->user()->phone ?? '' }}"
+                                    required placeholder="Contoh: 0812345678">
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block mb-2">Nomor Telepon / WA</label>
-                            <input type="text" name="phone" class="form-control" value="{{ auth()->user()->phone ?? '' }}"
-                                required placeholder="0812...">
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block mb-2">Alamat Lengkap</label>
+                        <div class="mb-6">
+                            <label class="block mb-2 text-sm font-semibold text-slate-700">Alamat Lengkap</label>
                             <textarea name="address" class="form-control" rows="3" required
-                                placeholder="Alamat lengkap...">{{ auth()->user()->address ?? '' }}</textarea>
+                                placeholder="Tulis alamat lengkap penjemputan/jaminan...">{{ auth()->user()->address ?? '' }}</textarea>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block mb-2">Mau disewa hari apa?</label>
-                            <input type="date" name="rental_date" class="form-control" required min="{{ date('Y-m-d') }}">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div>
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Tanggal Sewa</label>
+                                <input type="date" name="rental_date" class="form-control" required min="{{ date('Y-m-d') }}">
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Jam Pengambilan</label>
+                                <input type="time" name="pickup_time" class="form-control" required>
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Durasi Sewa (Hari)</label>
+                                <input type="number" name="duration" id="duration" class="form-control" min="1" value="1" required onchange="updateTotal()" onkeyup="updateTotal()">
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block mb-2">Diambil jam berapa?</label>
-                            <input type="time" name="pickup_time" class="form-control" required>
+                        <h3 class="text-xl font-bold text-slate-800 mb-6 mt-10 pb-3 border-b border-slate-100">Pembayaran</h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Metode Pembayaran</label>
+                                <select name="payment_method" id="payment_method" class="form-control" onchange="toggleProof()">
+                                    <option value="transfer">Transfer Bank (BCA - 12345678)</option>
+                                    <option value="cod">Bayar di Tempat (COD)</option>
+                                </select>
+                            </div>
+                            <div id="proof_container">
+                                <label class="block mb-2 text-sm font-semibold text-slate-700">Bukti Transfer (Screenshot)</label>
+                                <input type="file" name="payment_proof" class="form-control" accept="image/*">
+                                <small class="text-slate-400 d-block mt-2">Upload bukti pembayaran jika memilih Transfer Bank.</small>
+                            </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block mb-2">Berapa hari?</label>
-                            <input type="number" name="duration" id="duration" class="form-control" min="1" value="1" required onchange="updateTotal()" onkeyup="updateTotal()">
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block mb-2">Metode Pembayaran</label>
-                            <select name="payment_method" id="payment_method" class="form-control" onchange="toggleProof()">
-                                <option value="transfer">Transfer Bank (BCA - 12345678)</option>
-                                <option value="cod">Bayar di Tempat (COD)</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4" id="proof_container">
-                            <label class="block mb-2">Bukti Transfer (Screenshot)</label>
-                            <input type="file" name="payment_proof" class="form-control" accept="image/*">
-                            <small class="text-muted">Silakan upload bukti transfer jika memilih metode Transfer Bank.</small>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-block">Buat Pesanan</button>
+                        <button type="submit" class="btn btn-primary w-full py-4 text-base mt-6">Buat Pesanan Sekarang</button>
                     </form>
 
                     <script>
                         @php
                             $baseTotal = array_reduce($cart, function ($carry, $item) {
-                                return $carry + ($item['harga'] * $item['qty']); 
+                                return $carry + ($item['harga'] * $item['qty']);
                             }, 0);
                         @endphp
                         const baseTotal = {{ $baseTotal }};
@@ -105,39 +99,40 @@
 
             {{-- RINGKASAN PESANAN --}}
             <div>
-                <div class="card p-4">
-                    <h3 class="mb-4">Ringkasan Pesanan</h3>
+                <div class="card p-8 bg-slate-900 text-white border-0 shadow-lg sticky top-24">
+                    <h3 class="text-xl font-bold mb-6 pb-3 border-b border-slate-800">Ringkasan Pesanan</h3>
 
-                    <table class="w-100 mb-4" style="width: 100%; font-size: 0.9rem;">
+                    <div class="space-y-4 mb-8">
                         @foreach($cart as $item)
-                            <tr>
-                                <td style="padding: 5px 0;">
-                                    {{ $item['nama'] }} <br>
-                                    <div style="display: flex; gap: 5px; margin-top: 5px; align-items: center;">
-                                        <form action="{{ route('cart.update') }}" method="POST" style="display: flex; align-items: center;">
+                            <div class="flex justify-between items-start gap-4">
+                                <div class="flex-grow">
+                                    <h4 class="font-bold text-sm text-slate-200">{{ $item['nama'] }}</h4>
+                                    <div class="flex items-center gap-3 mt-1.5">
+                                        <form action="{{ route('cart.update') }}" method="POST" class="inline-flex items-center">
                                             @csrf
                                             @method('PATCH')
                                             <input type="hidden" name="id" value="{{ $item['id'] }}">
-                                            <input type="number" name="qty" value="{{ $item['qty'] }}" min="1" 
-                                                style="width: 50px; padding: 2px; font-size: 0.8rem;" onchange="this.form.submit()">
+                                            <input type="number" name="qty" value="{{ $item['qty'] }}" min="1"
+                                                class="w-12 text-center bg-slate-800 text-white border border-slate-700 rounded-lg text-xs py-1" onchange="this.form.submit()">
                                         </form>
-                                        <small class="text-muted">x Rp {{ number_format($item['harga'], 0, ',', '.') }}</small>
+                                        <span class="text-xs text-slate-400">x Rp {{ number_format($item['harga'], 0, ',', '.') }}</span>
                                     </div>
-                                </td>
-                                <td style="text-align: right; vertical-align: top;">Rp
-                                    {{ number_format($item['harga'] * $item['qty'], 0, ',', '.') }}</td>
-                            </tr>
+                                </div>
+                                <span class="font-bold text-sm text-green-400 flex-shrink-0">Rp {{ number_format($item['harga'] * $item['qty'], 0, ',', '.') }}</span>
+                            </div>
                         @endforeach
-                        <tr style="border-top: 1px solid #eee;">
-                            <td style="padding-top: 10px; font-weight: bold;">Total</td>
-                            <td
-                                style="padding-top: 10px; text-align: right; font-weight: bold; color: var(--primary-color);" id="total_display">
-                                Rp
-                                {{ number_format(array_reduce($cart, function ($carry, $item) {
-        return $carry + ($item['harga'] * $item['qty']); }, 0), 0, ',', '.') }}
-                            </td>
-                        </tr>
-                    </table>
+                    </div>
+
+                    <div class="border-t border-slate-850 pt-6 flex justify-between items-end">
+                        <div>
+                            <span class="text-xs text-slate-400 block mb-1">Total Biaya (Sewa / Hari)</span>
+                            <span class="text-xl font-black text-green-400" id="total_display">
+                                Rp {{ number_format(array_reduce($cart, function ($carry, $item) {
+                                    return $carry + ($item['harga'] * $item['qty']);
+                                }, 0), 0, ',', '.') }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
